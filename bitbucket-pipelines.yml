@@ -1,9 +1,9 @@
-#image: maven:3.6.1
+image: maven:3.6.1
 
-#pipelines:
-#  default:
-#    - step:
-#        caches:
-#          - maven
-#        script:
-#          - mvn install dockerfile:build dockerfile:push
+pipelines:
+  default:
+    - step:
+        caches:
+          - maven
+        script:
+          - mvn install #dockerfile:build dockerfile:push
