@@ -14,7 +14,7 @@
 	<description>User Service for PiggyBack Incentives</description>
 	<properties>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>rajagupt</docker.image.prefix>
+		<docker.image.prefix>piggy1</docker.image.prefix>
 	</properties>
 	<dependencies>
 		<dependency>
