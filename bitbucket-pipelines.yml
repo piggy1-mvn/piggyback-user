@@ -1,0 +1,16 @@
+image: maven:3.6.1
+pipelines:
+  default:
+    - step:
+        caches:
+          - maven
+        script:
+          - mvn install jib:build -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
+          - pipe: atlassian/aws-ecs-deploy:1.0.0
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+              CLUSTER_NAME: 'example-ecs-cluster'
+              SERVICE_NAME: 'example-ecs-service'
+              TASK_DEFINITION: 'task-definition.json'
