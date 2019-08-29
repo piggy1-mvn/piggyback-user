@@ -19,7 +19,7 @@
 	<repositories>
 		<repository>
 			<id>mvn-repo</id>
-			<url>https://github.com/piggy1-mvn/repo/tree/repo</url>
+			<url>https://raw.githubusercontent.com/piggy1-mvn/repo/repo</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
