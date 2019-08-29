@@ -5,8 +5,5 @@ cache:
   directories:
   - $HOME/.m2
 
-before_script:
-  - git submodule update --remote --recursive
-
 script:
  - mvn install jib:build -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
