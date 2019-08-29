@@ -9,8 +9,8 @@ install:
   skip
 
 script:
-  - mvn clean install org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
-  
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
+
 addons:
   sonarcloud:
     organization: "piggyback"
