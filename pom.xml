@@ -16,6 +16,18 @@
 		<java.version>1.8</java.version>
 		<docker.image.prefix>piggy1</docker.image.prefix>
 	</properties>
+	<repositories>
+		<repository>
+			<id>mvn-repo</id>
+			<url>https://github.com/piggy1-mvn/repo/repo</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
