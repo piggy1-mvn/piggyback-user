@@ -16,4 +16,4 @@ addons:
       secure: "UcRVTBKOkwM+MTc8vT0iXIoCZxzcOY0jvYW8ctntjMcTk9z/kGbQ99gu+6n9UOML4oGFNea5WIBOk16pGoQgtMVSn9EWXKhDq9hzQTXu81Cg6TKGTKJFe2bYRoM91yVl0CNw0sk2+YOnPsZeVv3FUqBDg5aptTh93yETR6nMN6IcgfRh9wCthLoD4aZONcIgyPV2eaJJySdKKd8nUtRzghk30u04MGRebRlyZS/4JTNezxSV/VflGMGAQlipm5+lRFLrXi+ZPxFDdyZxVcA1sXaFS6bvA+NSbGtZpvCz/7K8Q9BtOUrqIR9fHsjE5oLaNz2lXugRQezeTzeeNWG7KwRzBTqYdKwHB/YDcA1J5UJiTHtNnRVL04Hywu4X/EhaUyxoqcYQwrW6Gre4PQdkgSza13IFGMO8bbPSDo+i/bI+r/Qi3evhatHbcG04PB8rNL6UlKfBmM05s54VoiM88ZP6Ux0QLBygPHJu9LpYo8aIiWe4eLq4xt+E4N4gEHBbG6RZcmc9q6vgR6WjvAe0EETch+lELabrbQkc6sX5XwPegvdy+90IEBF1XBFTz6xXNE56ksw/iTCg0oWcIRSB136Dzjezr00OYMi6fIhoOWGG/6gP67gNtKatL3BC0kSxAxfk3ofOOnggM203Jxc1M/IJZJLL7J/ZlHH0oLkEeR8="
 
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.login=$SONAR_TOKEN -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
+  - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=piggy1-mvn_piggyback-user -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
