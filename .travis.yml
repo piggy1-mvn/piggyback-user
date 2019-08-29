@@ -9,13 +9,10 @@ install:
   skip
 
 script:
-  - mvn install jib:build -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
+  - mvn clean install org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
   
 addons:
   sonarcloud:
     organization: "piggyback"
     token:
       secure: "oo8dVjCOHIHJqGNNk7fC9m5XIS252DtR9KUyp/LU724vno6TqV0jhZytlKnIgvhG1MnF9x1C37UKi8vRqXbQsiXlbMureOU2+o0KoIcKGx8neRF2Q4NcxZnGsT26EGg4z4BRG9ky2c6YfTcVJIumTKLTxtdQLDBia+wMTaR6+xr7SEo0bPjHT3cmX+x/pE2XxwtXBKr1YVrlwTGEYakpjGnvwr7GNeJi2EvOvUhQdsL4+Wn+7rAYgFcFRgJakdfdSqHuO59J7uTXykaOkGXvgA7w/iHvJ63oposApNGetui3P0UhIm51sKR1L2mzC8f+qWtjA4VCvy3RNIU/9/Hkct8L2Svi6xRTIk6QMbTD/64xw3D1LpGyweer4bm43FafBK3Rn1yg9eYWC7nbpTiWuy6/xLosdprScNp5pkGck++c6ssw4gxKSW41DzAG5X/l5YfnyfJAC0nhIA3P2Kf16bOhte0ai02vIwMA+4KMQ28oWyQxy0+pXnW+luwXzwvtsMl8LHNQQfFPT0rmg1/G/mBLn9vFB/WM8qaJn6cxilykkJCtgJrLlScbIpPY9je2+boproXPsp0imSMmyOSnCVYUQfgp9+zj/crekwf5ptWivQ3nZAyL6A5w4fLs8i9lkUtOmCAIwqzOeDEgliaJelUEFAuB3YpbrM8IuWUWmIc="
-
-script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user
