@@ -1,3 +1,5 @@
 target/
 .idea/
 user.iml
+.classpath
+.project
