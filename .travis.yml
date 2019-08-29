@@ -1,9 +1,8 @@
-language: 
-  java
+language: java
 
 cache:
   directories:
-  - $HOME/.m2
+    - $HOME/.m2
 
 script:
- - mvn install jib:build -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
+  - mvn install jib:build -Djib.to.auth.username=$DOCKER_USERNAME -Djib.to.auth.password=$DOCKER_PASSWORD
