@@ -14,14 +14,13 @@ import java.net.URI;
 
 @Slf4j
 @RestController
-@RequestMapping("/piggyback-user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/user")
-    ResponseEntity<User> create(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         log.debug("User Service: Received POST request for creating new user.");
         //check no conflict
         User newUser = userService.save(user);
@@ -44,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
         log.debug("User Service: Received PUT request for updating user with userid."+ id);
         if(userService.findById(id).isPresent()) {
             return ResponseEntity.ok(userService.save(user));
@@ -54,7 +53,7 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{id}")
-    ResponseEntity<User> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         log.debug("User Service: Received DELETE request for deleting user with userid."+ id);
         if(userService.findById(id).isPresent()) {
              userService.deleteById(id);

@@ -1,160 +1,125 @@
 package com.incentives.piggyback.user;
 
+import com.incentives.piggyback.user.controller.UserController;
 import com.incentives.piggyback.user.model.User;
+import com.incentives.piggyback.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import static junit.framework.TestCase.assertTrue;
+
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-public class UserTest extends AbstractTest {
+@RunWith(MockitoJUnitRunner.class)
+public class UserTest {
 
-    @Override
+    private MockMvc mvc;
+
+    @Mock
+    private UserService userService;
+
+    @InjectMocks
+    UserController userController;
+
+    User user;
+
     @Before
-    public void setUp() {
-        super.setUp();
-    }
-
-    @Test
-    public void createUser() throws Exception {
-        String uri = "/piggyback-user/user";
-        User user = new User();
-       // user.setId(Long.valueOf(30));
+   public void setUp() throws Exception{
+        mvc = MockMvcBuilders.standaloneSetup(userController).build();
+        user = new User();
+        user.setId(1L);
         user.setFirst_name("JunitTesting");
         user.setMobile_number("+919986927698");
         user.setUser_password("Password123");
         user.setMobile_verified(true);
         user.setUser_email("abc@gmail.com");
         user.setDevice_id("adcvcb123");
-        String inputJson = super.mapToJson(user);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
 
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(201, status);
+   }
+
+   @Test
+   public final void testCreateUser() throws Exception {
+       String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"device_id\":\"adcvcb123\"}";
+       when(userService.save(any(User.class))).thenReturn(user);
+       RequestBuilder requestBuilder = MockMvcRequestBuilders
+               .post("/user")
+               .accept(MediaType.APPLICATION_JSON).content(userJson)
+               .contentType(MediaType.APPLICATION_JSON);
+       MvcResult result = mvc.perform(requestBuilder).andReturn();
+       MockHttpServletResponse response = result.getResponse();
+       assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+   }
+
+
+    @Test
+    public final void TestGetAllUser() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/user/{id}",1)
+                .accept(MediaType.APPLICATION_JSON);
+        MvcResult result = mvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
     @Test
-    public void getUserList() throws Exception {
-        String uri = "/piggyback-user/user";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        User[] usersList = super.mapFromJson(content, User[].class);
-        assertTrue(usersList.length > 0);
-    }
-    @Test
-    public void updateUser() throws Exception {
-        String uri = "/piggyback-user/user/2";
-        User user = new User();
-        user.setId(Long.valueOf(2));
-        user.setFirst_name("JunitTesting");
-        user.setMobile_number("+919986927698");
-        user.setUser_password("Password1234");
-        user.setMobile_verified(true);
-        user.setUser_email("abc@gmail.com");
-        user.setDevice_id("adcvcb123");
-        String inputJson = super.mapToJson(user);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-    }
-    @Test
-    public void deleteUser() throws Exception {
-        String uri = "/piggyback-user/user/13";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200,status);
+    public final void TestGetUserById() throws Exception {
+        Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+        MvcResult result = mvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
     @Test
-    public void createUserFailForInvalidInput() throws Exception {
-        String uri = "/piggyback-user/user";
-        User user = new User();
-        // user.setId(Long.valueOf(30));
-        user.setFirst_name("JunitTesting");
-        user.setUser_password("Password123");
-        user.setMobile_verified(true);
-        user.setUser_email("abc@gmail.com");
-        user.setDevice_id("adcvcb123");
-        String inputJson = super.mapToJson(user);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        assertEquals(content, "{\"mobile_number\":\"Mobile Number is mandatory\"}");
+    public final void TestDeleteUser() throws Exception {
+        Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
+        Mockito.doNothing().when(userService).deleteById(1L);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .delete("/user/{id}","1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+        MvcResult result = mvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
     @Test
-    public void createUserFailForInvalidInputEmailId() throws Exception {
-        String uri = "/piggyback-user/user";
-        User user = new User();
-        // user.setId(Long.valueOf(30));
-        user.setFirst_name("JunitTesting");
-        user.setUser_password("Password123");
-        user.setMobile_number("+919986927698");
-        user.setMobile_verified(true);
-        user.setUser_email("abc@");
-        user.setDevice_id("adcvcb123");
-        String inputJson = super.mapToJson(user);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        assertEquals(content, "{\"user_email\":\"must be a well-formed email address\"}");
+    public final void TestUpdateUser() throws Exception {
+        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"device_id\":\"adcvcb123\"}";
+        Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
+        Mockito.when(userService.save(user)).thenReturn(user);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .put("/user/{id}","1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(userJson);
+        MvcResult result = mvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
-    @Test
-    public void getUserListInvalidUserId() throws Exception {
-        String uri = "/piggyback-user/user/0";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(404, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        assertEquals(content, "Could not find user with Id 0");
-    }
 
-    @Test
-    public void updateUserInvalidId() throws Exception {
-        String uri = "/piggyback-user/user/0";
-        User user = new User();
-        user.setId(Long.valueOf(2));
-        user.setFirst_name("JunitTesting");
-        user.setMobile_number("+919986927698");
-        user.setUser_password("Password1234");
-        user.setMobile_verified(true);
-        user.setUser_email("abc@gmail.com");
-        user.setDevice_id("adcvcb123");
-        String inputJson = super.mapToJson(user);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
-    }
-    @Test
-    public void deleteUserInvalidId() throws Exception {
-        String uri = "/piggyback-user/user/0";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(404,status);
-    }
 }
