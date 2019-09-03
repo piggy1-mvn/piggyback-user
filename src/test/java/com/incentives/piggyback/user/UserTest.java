@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -27,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class UserTest {
 
@@ -82,7 +84,6 @@ public class UserTest {
     }
     @Test
     public final void TestGetUserById() throws Exception {
-        Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/user")
                 .contentType(MediaType.APPLICATION_JSON)
