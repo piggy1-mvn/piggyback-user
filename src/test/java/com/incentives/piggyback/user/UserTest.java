@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -40,10 +39,10 @@ public class UserTest {
     @InjectMocks
     UserController userController;
 
-    User user;
+    private User user;
 
     @Before
-   public void setUp() throws Exception{
+    public void setUp() {
         mvc = MockMvcBuilders.standaloneSetup(userController).build();
         user = new User();
         user.setId(1L);
@@ -53,22 +52,20 @@ public class UserTest {
         user.setMobile_verified(true);
         user.setUser_email("abc@gmail.com");
         user.setDevice_id("adcvcb123");
+    }
 
-   }
-
-   @Test
-   public final void testCreateUser() throws Exception {
-       String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"device_id\":\"adcvcb123\"}";
-       when(userService.save(any(User.class))).thenReturn(user);
-       RequestBuilder requestBuilder = MockMvcRequestBuilders
-               .post("/user")
-               .accept(MediaType.APPLICATION_JSON).content(userJson)
-               .contentType(MediaType.APPLICATION_JSON);
-       MvcResult result = mvc.perform(requestBuilder).andReturn();
-       MockHttpServletResponse response = result.getResponse();
-       assertEquals(HttpStatus.CREATED.value(), response.getStatus());
-   }
-
+    @Test
+    public final void testCreateUser() throws Exception {
+        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"device_id\":\"adcvcb123\"}";
+        when(userService.save(any(User.class))).thenReturn(user);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/user")
+                .accept(MediaType.APPLICATION_JSON).content(userJson)
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+    }
 
     @Test
     public final void TestGetAllUser() throws Exception {
@@ -76,12 +73,13 @@ public class UserTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/user/{id}",1)
+                .get("/user/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON);
         MvcResult result = mvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
     @Test
     public final void TestGetUserById() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -98,7 +96,7 @@ public class UserTest {
         Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
         Mockito.doNothing().when(userService).deleteById(1L);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/user/{id}","1")
+                .delete("/user/{id}", "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
         MvcResult result = mvc.perform(requestBuilder).andReturn();
@@ -112,7 +110,7 @@ public class UserTest {
         Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
         Mockito.when(userService.save(user)).thenReturn(user);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/user/{id}","1")
+                .put("/user/{id}", "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(userJson);
@@ -120,7 +118,5 @@ public class UserTest {
         MockHttpServletResponse response = result.getResponse();
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
-
-
 
 }
