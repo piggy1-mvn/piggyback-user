@@ -3,20 +3,9 @@ package com.incentives.piggyback.user.model;
 import com.incentives.piggyback.user.util.Roles;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.tools.ISupportsMessageContext;
-import org.hibernate.annotations.Filter;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
-
-import java.lang.annotation.Target;
-
-import static com.incentives.piggyback.user.util.Roles.PARTNER_API_USER;
-import static com.incentives.piggyback.user.util.Roles.PIGGY_USER;
-import static org.springframework.integration.graph.LinkNode.Type.error;
 
 @Entity
 @Table(name= "users" ,schema = "database1")
