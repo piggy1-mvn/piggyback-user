@@ -15,14 +15,30 @@ public enum Roles {
     PARTNER_USER,
     PARTNER_API_USER;
 
-    private static final List<Roles> rolesList = new ArrayList<>();
+   // private static final List<Roles> rolesList = new ArrayList<>();
 
-    static {
-        rolesList.addAll(Arrays.asList(Roles.values()));
-    }
+//    static {
+       // rolesList.addAll(Arrays.asList(Roles.values()));
+        public static ArrayList<String> getAllRoles() {
 
-    public static final List<Roles> getAllRoles(){
-        return rolesList;
-    }
+            Roles[] days = Roles.values();
+
+            ArrayList<String> stringDay = new ArrayList<String>();
+
+            for (Roles day : days) {
+
+                stringDay.add(day.toString());
+
+            }
+
+            return stringDay;
+
+        }
+
+//    }
+
+//    public static final List<Roles> getAllRoles(){
+//        return rolesList;
+//    }
 
 }

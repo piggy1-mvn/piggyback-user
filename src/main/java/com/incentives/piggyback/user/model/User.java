@@ -1,5 +1,6 @@
 package com.incentives.piggyback.user.model;
 
+import com.incentives.piggyback.user.util.Role;
 import com.incentives.piggyback.user.util.Roles;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,8 +47,10 @@ public class User {
     @Column(name="user_interests")
     private String user_interests;
 
+    @Role
+    @NotBlank(message = "user_role is mandatory")
     @Column(name="user_role")
-    private Roles user_role;
+    private String user_role;
 
     @Column(name="user_type")
     private String user_type;
