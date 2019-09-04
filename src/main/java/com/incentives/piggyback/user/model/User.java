@@ -1,15 +1,25 @@
 package com.incentives.piggyback.user.model;
 
+import com.incentives.piggyback.user.util.Roles;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.aspectj.weaver.tools.ISupportsMessageContext;
+import org.hibernate.annotations.Filter;
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+
+import java.lang.annotation.Target;
+
+import static com.incentives.piggyback.user.util.Roles.PARTNER_API_USER;
+import static com.incentives.piggyback.user.util.Roles.PIGGY_USER;
+import static org.springframework.integration.graph.LinkNode.Type.error;
 
 @Entity
-@Table(schema = "userdb")
+@Table(name= "users" ,schema = "database1")
 @Data
 @NoArgsConstructor
 public class User {
@@ -48,7 +58,7 @@ public class User {
     private String user_interests;
 
     @Column(name="user_role")
-    private Boolean user_role;
+    private Roles user_role;
 
     @Column(name="user_type")
     private String user_type;
