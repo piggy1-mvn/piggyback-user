@@ -1,12 +1,12 @@
 package com.incentives.piggyback.user.model;
 
+import com.incentives.piggyback.user.util.Role;
+import com.incentives.piggyback.user.util.Roles;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(schema = "userdb")
@@ -47,8 +47,10 @@ public class User {
     @Column(name="user_interests")
     private String user_interests;
 
+    @Role
+    @NotBlank(message = "user_role is mandatory")
     @Column(name="user_role")
-    private Boolean user_role;
+    private String user_role;
 
     @Column(name="user_type")
     private String user_type;

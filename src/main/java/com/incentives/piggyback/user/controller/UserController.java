@@ -1,18 +1,24 @@
 package com.incentives.piggyback.user.controller;
 
+import com.google.gson.Gson;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
 import com.incentives.piggyback.user.model.User;
 import com.incentives.piggyback.user.service.UserService;
+import com.incentives.piggyback.user.util.Roles;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.net.URI;
+import java.util.List;
 
 @Slf4j
+@Validated
 @RestController
 public class UserController {
 
@@ -61,6 +67,13 @@ public class UserController {
         }
         else
             return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/user/roles")
+    public ResponseEntity getAllUserRoles() {
+        log.debug("User Service: Received GET request for getting all roles available.");
+        List<String> roles = Roles.getAllRoles();
+        return  ResponseEntity.ok(new Gson().toJson(roles));
     }
 
 }

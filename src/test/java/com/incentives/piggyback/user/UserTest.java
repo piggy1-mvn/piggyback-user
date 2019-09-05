@@ -51,12 +51,13 @@ public class UserTest {
         user.setUser_password("Password123");
         user.setMobile_verified(true);
         user.setUser_email("abc@gmail.com");
+        user.setUser_role("PIGGY_ADMIN");
         user.setDevice_id("adcvcb123");
     }
 
     @Test
     public final void testCreateUser() throws Exception {
-        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"device_id\":\"adcvcb123\"}";
+        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"user_role\": \"PIGGY_ADMIN\",\"device_id\":\"adcvcb123\"}";
         when(userService.save(any(User.class))).thenReturn(user);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/user")
@@ -106,7 +107,7 @@ public class UserTest {
 
     @Test
     public final void TestUpdateUser() throws Exception {
-        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"device_id\":\"adcvcb123\"}";
+        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"user_role\": \"PIGGY_ADMIN\",\"device_id\":\"adcvcb123\"}";
         Mockito.when(userService.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
         Mockito.when(userService.save(user)).thenReturn(user);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
