@@ -1,4 +1,4 @@
-package com.incentives.piggyback.user.util;
+package com.incentives.piggyback.user.util.exceptionHandler;
 
 import com.incentives.piggyback.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;

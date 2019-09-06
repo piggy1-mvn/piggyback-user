@@ -1,4 +1,4 @@
-package com.incentives.piggyback.user.util;
+package com.incentives.piggyback.user.util.advice;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

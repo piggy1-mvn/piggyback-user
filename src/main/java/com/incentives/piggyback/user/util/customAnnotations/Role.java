@@ -1,4 +1,6 @@
-package com.incentives.piggyback.user.util;
+package com.incentives.piggyback.user.util.customAnnotations;
+
+import com.incentives.piggyback.user.util.exceptionHandler.RoleValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -15,8 +17,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Role {
     String message() default "Invalid Role passed";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

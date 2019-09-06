@@ -1,7 +1,6 @@
 package com.incentives.piggyback.user.model;
 
-import com.incentives.piggyback.user.util.Role;
-import com.incentives.piggyback.user.util.Roles;
+import com.incentives.piggyback.user.util.customAnnotations.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +20,7 @@ public class User {
 
     @Size(min=2,max=30)
     @NotBlank(message = "First Name is mandatory")
+    @Column(name="first_name")
     private String first_name;
 
     @Size(max=30)
@@ -58,5 +58,12 @@ public class User {
     @NotBlank(message = "device Id is mandatory")
     @Column(name="device_id")
     private String device_id;
+
+    @Override
+    public String toString() {
+        return "User [userId=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", user_password="
+                + user_password + ", mobile_number=" + mobile_number + ",mobile_verified" + mobile_verified + ",user_email " + user_email + ",user_interests " + user_interests
+                + ",user_role" + user_type + ",device_id " + device_id +"]";
+    }
 
 }
