@@ -45,7 +45,7 @@ public class UserController {
                         newUser.toString(),
                         Constant.USER_CREATED_EVENT,
                         Calendar.getInstance().getTime().toString(),
-                        HttpStatus.CREATED.toString(),
+                        "",
                         Constant.USER_SOURCE_ID
                 ));
         return ResponseEntity.created(location).body(newUser);
@@ -74,7 +74,7 @@ public class UserController {
                             updatedUser.toString(),
                             Constant.USER_UPDATED_EVENT,
                             Calendar.getInstance().getTime().toString(),
-                            HttpStatus.OK.toString(),
+                            "",
                             Constant.USER_SOURCE_ID
                     ));
             return ResponseEntity.ok(userService.save(user));
@@ -94,7 +94,7 @@ public class UserController {
                             id.toString(),
                             Constant.USER_DEACTIVATED_EVENT,
                             Calendar.getInstance().getTime().toString(),
-                            HttpStatus.OK.toString(),
+                            "",
                             Constant.USER_SOURCE_ID
                     ));
              return ResponseEntity.ok().build();
