@@ -72,7 +72,7 @@ public class UserController {
             messagingGateway.sendToPubsub(
                     CommonUtility.stringifyEventForPublish(
                             updatedUser.toString(),
-                            Constant.USER_CREATED_EVENT,
+                            Constant.USER_UPDATED_EVENT,
                             Calendar.getInstance().getTime().toString(),
                             HttpStatus.OK.toString(),
                             Constant.USER_SOURCE_ID
