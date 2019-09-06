@@ -13,7 +13,7 @@ public enum Roles {
 
         public static ArrayList<String> getAllRoles() {
             Roles[] roles = Roles.values();
-            ArrayList<String> stringRole = new ArrayList<String>();
+            ArrayList<String> stringRole = new ArrayList<>();
             for (Roles role : roles) {
                 stringRole.add(role.toString());
             }
