@@ -2,6 +2,7 @@ package com.incentives.piggyback.user;
 
 import com.incentives.piggyback.user.controller.UserController;
 import com.incentives.piggyback.user.model.User;
+import com.incentives.piggyback.user.publisher.UserEventPublisher;
 import com.incentives.piggyback.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +37,9 @@ public class UserTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private UserEventPublisher.PubsubOutboundGateway messagingGatewayUserService;
+
     @InjectMocks
     UserController userController;
 
@@ -58,7 +62,7 @@ public class UserTest {
     @Test
     public final void testCreateUser() throws Exception {
         String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"user_role\": \"PIGGY_ADMIN\",\"device_id\":\"adcvcb123\"}";
-        when(userService.save(any(User.class))).thenReturn(user);
+        Mockito.when(userService.save(any(User.class))).thenReturn(user);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/user")
                 .accept(MediaType.APPLICATION_JSON).content(userJson)

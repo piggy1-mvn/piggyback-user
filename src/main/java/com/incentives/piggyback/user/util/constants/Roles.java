@@ -1,4 +1,4 @@
-package com.incentives.piggyback.user.util;
+package com.incentives.piggyback.user.util.constants;
 
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
