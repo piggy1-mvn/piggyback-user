@@ -7,4 +7,6 @@ public interface Constant {
     String USER_CREATED_EVENT = "User Events Created";
     String USER_UPDATED_EVENT = "User Events Updated";
     String USER_DEACTIVATED_EVENT = "User Events Deactivated";
+
+    String USER_TYPE_FB = "FACEBOOK_USER";
 }
