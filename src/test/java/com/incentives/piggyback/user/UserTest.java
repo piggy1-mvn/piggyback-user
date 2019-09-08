@@ -67,7 +67,7 @@ public class UserTest {
 //    @Test
 //    public final void testCreateUser() throws Exception {
 //        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"user_role\": \"PIGGY_ADMIN\",\"device_id\":\"adcvcb123\"}";
-//        Mockito.when(userService.save(any(User.class))).thenReturn(user);
+//      //  Mockito.when(userServiceRepo.save(any(User.class))).thenReturn(user);
 //        RequestBuilder requestBuilder = MockMvcRequestBuilders
 //                .post("/user")
 //                .accept(MediaType.APPLICATION_JSON).content(userJson)
@@ -81,7 +81,7 @@ public class UserTest {
     public final void TestGetAllUser() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        Mockito.when(userServiceRepo.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
+//        Mockito.when(userServiceRepo.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/user/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON);
@@ -103,8 +103,8 @@ public class UserTest {
 
     @Test
     public final void TestDeleteUser() throws Exception {
-        Mockito.when(userServiceRepo.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
-        Mockito.doNothing().when(userServiceRepo).deleteById(1L);
+//        Mockito.when(userServiceRepo.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
+//        Mockito.doNothing().when(userServiceRepo).deleteById(1L);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .delete("/user/{id}", "1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -117,8 +117,8 @@ public class UserTest {
     @Test
     public final void TestUpdateUser() throws Exception {
         String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"user_role\": \"PIGGY_ADMIN\",\"device_id\":\"adcvcb123\"}";
-        Mockito.when(userServiceRepo.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
-        Mockito.when(userServiceRepo.save(user)).thenReturn(user);
+//        Mockito.when(userServiceRepo.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
+ //       Mockito.when(userServiceRepo.save(user)).thenReturn(user);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put("/user/{id}", "1")
                 .contentType(MediaType.APPLICATION_JSON)
