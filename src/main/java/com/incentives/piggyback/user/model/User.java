@@ -4,8 +4,10 @@ import com.incentives.piggyback.user.util.customAnnotations.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
 
 @Entity
 @Table(schema = "userdb")
@@ -27,7 +29,7 @@ public class User {
     @Column(name="last_name")
     private String last_name;
 
-    @NotBlank(message = "Password is mandatory")
+    @Nullable
     @Column(name="user_password")
     private String user_password;
 
