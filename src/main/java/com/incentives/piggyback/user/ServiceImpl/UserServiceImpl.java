@@ -26,7 +26,7 @@ class UserServiceImpl implements UserService {
     private UserEventPublisher.PubsubOutboundGateway messagingGateway;
 
     public ResponseEntity<User> createUser(User user) {
-        if((user.getUser_password()!=null && user.getUser_type()== Constant.USER_TYPE_FB)||(user.getUser_type()==null && user.getUser_password()==null)){
+        if((user.getUser_password()!=null && user.getUser_type()== Roles.USER_TYPE_FB.toString())||(user.getUser_type()==null && user.getUser_password()==null)){
             return ResponseEntity.badRequest().build();
         }
         User newUser = userServiceRepo.save(user);
@@ -92,7 +92,7 @@ class UserServiceImpl implements UserService {
         messagingGateway.sendToPubsub(
                 CommonUtility.stringifyEventForPublish(
                         id.toString(),
-                        Constant.USER_DEACTIVATED_EVENT,
+                        Constant.USER_UPDATED_EVENT,
                         Calendar.getInstance().getTime().toString(),
                         "",
                         Constant.USER_SOURCE_ID
