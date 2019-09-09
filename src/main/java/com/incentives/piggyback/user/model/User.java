@@ -3,17 +3,23 @@ package com.incentives.piggyback.user.model;
 import com.incentives.piggyback.user.util.customAnnotations.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(schema = "userdb")
+@Table(name = "users", schema = "database1")
 @Data
 @NoArgsConstructor
 public class User {
 
     @Id
+    @Email
+    @NotBlank(message = "User email is mandatory")
+    @Column(name="user_email",unique = true)
+    private String user_email;
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
@@ -39,10 +45,6 @@ public class User {
     @Column(name="mobile_verified")
     private Boolean mobile_verified;
 
-    @Email
-    @NotBlank(message = "User email is mandatory")
-    @Column(name="user_email")
-    private String user_email;
 
     @Column(name="user_interests")
     private String user_interests;
