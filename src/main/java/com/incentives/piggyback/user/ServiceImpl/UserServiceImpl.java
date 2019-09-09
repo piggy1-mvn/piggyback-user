@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 class UserServiceImpl implements UserService {
     @Autowired
-    UserServiceRepository userServiceRepo;
+    private UserServiceRepository userServiceRepo;
 
     @Autowired
     private UserEventPublisher.PubsubOutboundGateway messagingGateway;
