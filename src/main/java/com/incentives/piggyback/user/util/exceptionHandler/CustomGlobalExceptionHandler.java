@@ -1,6 +1,5 @@
 package com.incentives.piggyback.user.util.exceptionHandler;
 
-import com.incentives.piggyback.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;

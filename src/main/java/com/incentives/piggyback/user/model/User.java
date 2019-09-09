@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.UniqueElements;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
 
 @Entity
 @Table(name = "users", schema = "database1")
@@ -33,7 +35,7 @@ public class User {
     @Column(name="last_name")
     private String last_name;
 
-    @NotBlank(message = "Password is mandatory")
+    @Nullable
     @Column(name="user_password")
     private String user_password;
 

@@ -9,7 +9,8 @@ public enum Roles {
     PIGGY_USER,
     PARTNER_ADMIN,
     PARTNER_USER,
-    PARTNER_API_USER;
+    PARTNER_API_USER,
+    USER_TYPE_FB;
 
         public static ArrayList<String> getAllRoles() {
             Roles[] roles = Roles.values();
