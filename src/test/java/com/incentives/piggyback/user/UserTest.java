@@ -10,9 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,8 +25,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -48,12 +44,10 @@ public class UserTest {
     @InjectMocks
     UserController userController;
 
-    private User user;
-
     @Before
     public void setUp() {
         mvc = MockMvcBuilders.standaloneSetup(userController).build();
-        user = new User();
+        User user = new User();
         user.setId(1L);
         user.setFirst_name("JunitTesting");
         user.setMobile_number("+919986927698");
