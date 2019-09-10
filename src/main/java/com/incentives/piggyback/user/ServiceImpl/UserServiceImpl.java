@@ -3,6 +3,7 @@ package com.incentives.piggyback.user.ServiceImpl;
 import com.google.gson.Gson;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
 import com.incentives.piggyback.user.model.User;
+import com.incentives.piggyback.user.model.UserCredential;
 import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.publisher.UserEventPublisher;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
@@ -11,6 +12,7 @@ import com.incentives.piggyback.user.util.CommonUtility;
 import com.incentives.piggyback.user.util.constants.Constant;
 import com.incentives.piggyback.user.util.constants.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -106,5 +108,14 @@ class UserServiceImpl implements UserService {
         return userServiceRepo.save(user);
     }
 
+    public ResponseEntity userLogin(UserCredential userCredentials) {
+        User user = userServiceRepo.findByEmail(userCredentials.getEmail());
+        if (user.getUser_password().equals(userCredentials.getUser_password())) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+    }
 
 }
