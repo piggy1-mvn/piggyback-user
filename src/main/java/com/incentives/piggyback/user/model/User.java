@@ -1,6 +1,5 @@
 package com.incentives.piggyback.user.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.incentives.piggyback.user.util.customAnnotations.Role;
 import lombok.Data;
