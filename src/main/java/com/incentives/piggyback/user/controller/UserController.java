@@ -69,7 +69,7 @@ public class UserController {
         return userService.updateUserInterest(userInterest,id);
     }
 
-    @PostMapping("/user/login/")
+    @PostMapping("/user/login")
     public ResponseEntity userLogin( @Valid @RequestBody UserCredential userCredential) {
         log.debug("User Service: Received POST request for login.");
         return userService.userLogin(userCredential);

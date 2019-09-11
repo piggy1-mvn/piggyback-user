@@ -113,7 +113,7 @@ class UserServiceImpl implements UserService {
         if (user.getUser_password().equals(userCredentials.getUser_password())) {
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
     }
