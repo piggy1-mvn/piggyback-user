@@ -1,7 +1,6 @@
 package com.incentives.piggyback.user.ServiceImpl;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
@@ -19,10 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 @Service
 class UserServiceImpl implements UserService {
