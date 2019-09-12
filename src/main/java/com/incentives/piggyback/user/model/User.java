@@ -1,5 +1,6 @@
 package com.incentives.piggyback.user.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.incentives.piggyback.user.util.customAnnotations.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import javax.validation.constraints.*;
 
 
 @Entity
-@Table(schema = "userdb")
+@Table(name= "users",schema = "userdb",uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
 @Data
 @NoArgsConstructor
 public class User {
@@ -30,6 +31,7 @@ public class User {
     private String last_name;
 
     @Nullable
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name="user_password")
     private String user_password;
 
@@ -43,8 +45,8 @@ public class User {
 
     @Email
     @NotBlank(message = "User email is mandatory")
-    @Column(name="user_email")
-    private String user_email;
+    @Column(name="email")
+    private String email;
 
     @Column(name="user_interests")
     private String user_interests;
@@ -64,7 +66,7 @@ public class User {
     @Override
     public String toString() {
         return "User [userId=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", user_password="
-                + user_password + ", mobile_number=" + mobile_number + ",mobile_verified" + mobile_verified + ",user_email " + user_email + ",user_interests " + user_interests
+                + user_password + ", mobile_number=" + mobile_number + ",mobile_verified" + mobile_verified + ",email " + email + ",user_interests " + user_interests
                 + ",user_role" + user_type + ",device_id " + device_id +"]";
     }
 

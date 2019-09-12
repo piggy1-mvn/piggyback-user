@@ -1,8 +1,12 @@
 package com.incentives.piggyback.user.ServiceImpl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
 import com.incentives.piggyback.user.model.User;
+import com.incentives.piggyback.user.model.UserCredential;
 import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.publisher.UserEventPublisher;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
@@ -11,10 +15,13 @@ import com.incentives.piggyback.user.util.CommonUtility;
 import com.incentives.piggyback.user.util.constants.Constant;
 import com.incentives.piggyback.user.util.constants.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -26,7 +33,7 @@ class UserServiceImpl implements UserService {
     private UserEventPublisher.PubsubOutboundGateway messagingGateway;
 
     public ResponseEntity<User> createUser(User user) {
-        if((user.getUser_password()!=null && user.getUser_type()== Roles.USER_TYPE_FB.toString())||(user.getUser_type()==null && user.getUser_password()==null)){
+        if((user.getUser_password()!=null && user.getUser_type().equals(Roles.USER_TYPE_FB.toString())) || (user.getUser_type()==null && user.getUser_password()==null)){
             return ResponseEntity.badRequest().build();
         }
         User newUser = userServiceRepo.save(user);
@@ -65,7 +72,6 @@ class UserServiceImpl implements UserService {
             return ResponseEntity.ok(userServiceRepo.save(user));
     }
 
-
     public ResponseEntity<User> deleteUser(Long id) {
         userServiceRepo.findById(id).orElseThrow(()->new UserNotFoundException(id));
             userServiceRepo.deleteById(id);
@@ -82,8 +88,9 @@ class UserServiceImpl implements UserService {
     }
 
     public ResponseEntity getAllUserRoles() {
-        List<String> roles = Roles.getAllRoles();
-        return  ResponseEntity.ok(new Gson().toJson(roles));
+        HashMap map = new HashMap();
+        map.put("user_role", Roles.getAllRoles());
+        return  ResponseEntity.ok(new Gson().toJson(map));
     }
 
     public ResponseEntity updateUserInterest(UserInterest userInterest, Long id) {
@@ -106,5 +113,15 @@ class UserServiceImpl implements UserService {
         return userServiceRepo.save(user);
     }
 
+    public ResponseEntity userLogin(UserCredential userCredentials) {
+        User user = userServiceRepo.findByEmail(userCredentials.getEmail());
+        if (user.getUser_password().equals(userCredentials.getUser_password())) {
+            JsonObject result = new JsonObject();
+            result.add("user_role", new JsonPrimitive(user.getUser_role()));
+            return ResponseEntity.ok(new Gson().toJson(result));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 
 }
