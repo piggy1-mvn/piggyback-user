@@ -1,7 +1,7 @@
 package com.incentives.piggyback.user;
 
 import com.incentives.piggyback.user.controller.UserController;
-import com.incentives.piggyback.user.model.User;
+import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.publisher.UserEventPublisher;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.service.UserService;
@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-public class UserTest {
+public class UsersTest {
 
     private MockMvc mvc;
 
@@ -47,7 +47,7 @@ public class UserTest {
     @Before
     public void setUp() {
         mvc = MockMvcBuilders.standaloneSetup(userController).build();
-        User user = new User();
+        Users user = new Users();
         user.setId(1L);
         user.setFirst_name("JunitTesting");
         user.setMobile_number("+919986927698");

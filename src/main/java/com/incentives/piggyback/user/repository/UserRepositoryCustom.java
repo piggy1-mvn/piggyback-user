@@ -1,7 +1,7 @@
 package com.incentives.piggyback.user.repository;
 
-import com.incentives.piggyback.user.model.User;
+import com.incentives.piggyback.user.model.Users;
 
 public interface UserRepositoryCustom {
-    User findByEmail(String user_email);
+    Users findByEmail(String user_email);
 }

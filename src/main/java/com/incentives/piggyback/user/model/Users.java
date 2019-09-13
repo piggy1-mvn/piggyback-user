@@ -11,10 +11,10 @@ import javax.validation.constraints.*;
 
 
 @Entity
-@Table(name= "users",schema = "userdb",uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
+@Table(name= "users",schema = "database1",uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
 @Data
 @NoArgsConstructor
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

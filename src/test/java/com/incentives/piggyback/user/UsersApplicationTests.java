@@ -12,7 +12,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 
 @RunWith(PowerMockRunner.class)
 @SpringBootTest
-public class UserApplicationTests {
+public class UsersApplicationTests {
 
 	@Test
 	@PrepareForTest(SpringApplication.class)
