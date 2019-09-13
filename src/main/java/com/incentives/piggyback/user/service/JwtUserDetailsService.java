@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,12 +23,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) {
 		Users user = userServiceRepo.findByEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getUser_password(),
+		return new User(user.getEmail(), user.getUser_password(),
 				new ArrayList<>());
 	}
 
@@ -39,7 +40,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setMobile_number(user.getMobile_number());
 		newUser.setMobile_verified(user.getMobile_verified());
 		newUser.setEmail(user.getEmail());
-		newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
+		//newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
+		if ((user.getUser_password() == null)) {
+			newUser.setUser_password(null);
+		} else {
+			newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
+		}
 		newUser.setUser_role(user.getUser_role());
 		newUser.setUser_type(user.getUser_type());
 		newUser.setDevice_id(user.getDevice_id());
@@ -55,7 +61,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setMobile_number(user.getMobile_number());
 		newUser.setMobile_verified(user.getMobile_verified());
 		newUser.setEmail(user.getEmail());
-		newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
+		//newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
+		if ((user.getUser_password() == null)) {
+			newUser.setUser_password(null);
+		} else {
+			newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
+		}
 		newUser.setUser_role(user.getUser_role());
 		newUser.setUser_type(user.getUser_type());
 		newUser.setDevice_id(user.getDevice_id());

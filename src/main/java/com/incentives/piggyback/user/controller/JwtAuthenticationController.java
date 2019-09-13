@@ -3,11 +3,13 @@ package com.incentives.piggyback.user.controller;
 import java.net.URI;
 import java.util.Objects;
 
-import com.incentives.piggyback.user.model.JwtRequest;
 import com.incentives.piggyback.user.model.JwtResponse;
+import com.incentives.piggyback.user.model.UserCredential;
 import com.incentives.piggyback.user.model.Users;
+import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.service.UserService;
 import com.incentives.piggyback.user.util.config.springSecurityConfig.JwtTokenUtil;
+import com.incentives.piggyback.user.util.constants.Roles;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,13 +41,17 @@ public class JwtAuthenticationController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
+	@Autowired
+	private UserServiceRepository userServiceRepo;
+
+	@PostMapping("/user/login")
+	public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody UserCredential authenticationRequest)
 			throws Exception {
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		authenticate(authenticationRequest.getEmail(), authenticationRequest.getUser_password());
 		final UserDetails userDetails = jwtInMemoryUserDetailsService
-				.loadUserByUsername(authenticationRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails);
+				.loadUserByUsername(authenticationRequest.getEmail());
+		Users user = userServiceRepo.findByEmail(authenticationRequest.getEmail());
+		final String token = jwtTokenUtil.generateToken(userDetails,user.getUser_role());
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
@@ -65,9 +71,9 @@ public class JwtAuthenticationController {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
+			throw new DisabledException("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
+			throw new BadCredentialsException("INVALID_CREDENTIALS", e);
 		}
 	}
 

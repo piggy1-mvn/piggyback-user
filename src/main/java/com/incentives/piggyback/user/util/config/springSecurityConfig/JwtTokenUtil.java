@@ -1,12 +1,13 @@
 package com.incentives.piggyback.user.util.config.springSecurityConfig;
 
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -14,16 +15,19 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
 import static com.incentives.piggyback.user.util.constants.Constant.JWT_TOKEN_VALIDITY;
 
+@Slf4j
 @Component
 public class JwtTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = -2550185165626007488L;
-	
-	@Value("${jwt.secret}")
-	private String secret;
 
+	private String secret = keyGenerator();
+	
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
@@ -50,13 +54,9 @@ public class JwtTokenUtil implements Serializable {
 		return expiration.before(new Date());
 	}
 
-	private Boolean ignoreTokenExpiration(String token) {
-		// here you specify tokens, for that the expiration is ignored
-		return false;
-	}
-
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(UserDetails userDetails, String role) {
 		Map<String, Object> claims = new HashMap<>();
+		claims.put("user_role",role);
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 
@@ -67,11 +67,23 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	public Boolean canTokenBeRefreshed(String token) {
-		return (!isTokenExpired(token) || ignoreTokenExpiration(token));
+		return (!isTokenExpired(token));
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	}
+
+	private String keyGenerator() {
+		SecretKey secretKey = null;
+		try {
+			KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+			keyGen.init(256); // for example
+			 secretKey = keyGen.generateKey();
+		}catch(NoSuchAlgorithmException e){
+			log.debug("Secret key generation failed");
+		}
+		return secretKey.toString();
 	}
 }
