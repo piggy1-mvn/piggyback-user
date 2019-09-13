@@ -10,9 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,8 +25,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -48,18 +44,16 @@ public class UserTest {
     @InjectMocks
     UserController userController;
 
-    private User user;
-
     @Before
     public void setUp() {
         mvc = MockMvcBuilders.standaloneSetup(userController).build();
-        user = new User();
+        User user = new User();
         user.setId(1L);
         user.setFirst_name("JunitTesting");
         user.setMobile_number("+919986927698");
         user.setUser_password("Password123");
         user.setMobile_verified(true);
-        user.setUser_email("abc@gmail.com");
+        user.setEmail("abc@gmail.com");
         user.setUser_role("PIGGY_ADMIN");
         user.setDevice_id("adcvcb123");
     }
@@ -116,9 +110,9 @@ public class UserTest {
 
     @Test
     public final void TestUpdateUser() throws Exception {
-        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"user_email\":\"abc@gmail.com\",\"user_role\": \"PIGGY_ADMIN\",\"device_id\":\"adcvcb123\"}";
-//        Mockito.when(userServiceRepo.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
- //       Mockito.when(userServiceRepo.save(user)).thenReturn(user);
+        String userJson = "{\"id\":\"1\",\"first_name\":\"JunitTesting\",\"user_password\":\"Password123\",\"mobile_number\":\"+919986927698\",\"mobile_verified\":true,\"email\":\"abc@gmail.com\",\"user_role\": \"PIGGY_ADMIN\",\"device_id\":\"adcvcb123\"}";
+  //      Mockito.when(userServiceRepo.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
+  //       Mockito.when(userServiceRepo.save(user)).thenReturn(user);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put("/user/{id}", "1")
                 .contentType(MediaType.APPLICATION_JSON)

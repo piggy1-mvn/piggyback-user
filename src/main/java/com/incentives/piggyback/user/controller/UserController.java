@@ -1,6 +1,8 @@
 package com.incentives.piggyback.user.controller;
 
+import com.google.auth.oauth2.UserCredentials;
 import com.incentives.piggyback.user.model.User;
+import com.incentives.piggyback.user.model.UserCredential;
 import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +67,12 @@ public class UserController {
     public ResponseEntity updateUserInterest(@RequestBody UserInterest userInterest, @PathVariable Long id) {
         log.debug("User Service: Received PATCH request for updating user interest.");
         return userService.updateUserInterest(userInterest,id);
+    }
+
+    @PostMapping("/user/login")
+    public ResponseEntity userLogin( @Valid @RequestBody UserCredential userCredential) {
+        log.debug("User Service: Received POST request for login.");
+        return userService.userLogin(userCredential);
     }
 
 }

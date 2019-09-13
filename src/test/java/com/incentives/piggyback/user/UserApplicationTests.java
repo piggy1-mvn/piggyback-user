@@ -1,33 +1,26 @@
 package com.incentives.piggyback.user;
 
-import com.incentives.piggyback.user.controller.UserController;
-import com.incentives.piggyback.user.service.UserService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+
+@RunWith(PowerMockRunner.class)
 @SpringBootTest
 public class UserApplicationTests {
 
-	@Mock
-	private UserService userService;
-
-	@InjectMocks
-	UserController userController;
-
-	@Before
-	public void setUp() {
-		MockMvcBuilders.standaloneSetup(userController).build();
-	}
-
 	@Test
+	@PrepareForTest(SpringApplication.class)
 	public void contextLoads() {
+		mockStatic(SpringApplication.class);
+		UserApplication.main(new String[]{"Hello", "World"});
+		verifyStatic(SpringApplication.class);
+		SpringApplication.run(UserApplication.class, "Hello", "World");
 	}
 
 }
