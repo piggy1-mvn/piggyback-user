@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
-public class UserInterest extends User{
+public class UserInterest extends Users {
 
     @Column(name="id")
     private Long id;
