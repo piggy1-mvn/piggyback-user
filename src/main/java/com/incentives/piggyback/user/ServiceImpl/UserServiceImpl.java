@@ -114,16 +114,4 @@ class UserServiceImpl implements UserService {
         return userServiceRepo.save(user);
     }
 
-//    public ResponseEntity userLogin(UserCredential userCredentials) {
-//        Users user = userServiceRepo.findByEmail(userCredentials.getEmail());
-//
-//        if (user.getUser_password().equals(userCredentials.getUser_password())) {
-//            JsonObject result = new JsonObject();
-//            result.add("user_role", new JsonPrimitive(user.getUser_role()));
-//            return ResponseEntity.ok(new Gson().toJson(result));
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//    }
-
 }

@@ -21,8 +21,6 @@ public interface UserService {
 
      ResponseEntity getAllUserRoles();
 
-     //ResponseEntity userLogin(UserCredential userCredentials);
-
      ResponseEntity updateUserInterest(UserInterest userInterest,Long id);
 
      Users partialUpdate(UserInterest userInterest, Long id);
