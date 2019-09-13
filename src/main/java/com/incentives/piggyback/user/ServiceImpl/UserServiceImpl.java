@@ -34,7 +34,7 @@ class UserServiceImpl implements UserService {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
-    public ResponseEntity<User> createUser(User user) {
+    public ResponseEntity<Users> createUser(Users user) {
         if((user.getUser_password()!=null && user.getUser_type().equals(Roles.USER_TYPE_FB.toString())) || (user.getUser_type()==null && user.getUser_password()==null)){
 
             return ResponseEntity.badRequest().build();
