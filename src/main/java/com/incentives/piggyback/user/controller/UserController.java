@@ -23,16 +23,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @PostMapping("/user/create")
-//    public ResponseEntity<Users> createUser(@Valid @RequestBody Users user) {
-//        log.debug("User Service: Received POST request for creating new user.");
-//        ResponseEntity<Users> responseEntity = userService.createUser(user);
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .query(responseEntity.getBody().getId().toString())
-//                .buildAndExpand(responseEntity.getBody().getId().toString()).toUri();
-//        return ResponseEntity.created(location).body(responseEntity.getBody());
-//    }
-
     @GetMapping("/user")
     public Iterable<Users> getAllUser() {
         log.debug("User Service: Received GET request for getting all users.");
