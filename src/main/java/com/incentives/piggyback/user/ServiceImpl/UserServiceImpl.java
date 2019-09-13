@@ -1,6 +1,8 @@
 package com.incentives.piggyback.user.ServiceImpl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
 import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.model.UserCredential;
@@ -18,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
-import java.util.List;
+import java.util.HashMap;
 
 @Service
 class UserServiceImpl implements UserService {
@@ -28,11 +30,13 @@ class UserServiceImpl implements UserService {
     @Autowired
     private UserEventPublisher.PubsubOutboundGateway messagingGateway;
 
+
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
-    public ResponseEntity<Users> createUser(Users user) {
-        if((user.getUser_password()!=null && user.getUser_type()== Roles.USER_TYPE_FB.toString())||(user.getUser_type()==null && user.getUser_password()==null)){
+    public ResponseEntity<User> createUser(User user) {
+        if((user.getUser_password()!=null && user.getUser_type().equals(Roles.USER_TYPE_FB.toString())) || (user.getUser_type()==null && user.getUser_password()==null)){
+
             return ResponseEntity.badRequest().build();
         }
         Users newUser = userDetailsService.save(user);
@@ -72,8 +76,8 @@ class UserServiceImpl implements UserService {
             return ResponseEntity.ok(updatedUser);
     }
 
-
     public ResponseEntity<Users> deleteUser(Long id) {
+
         userServiceRepo.findById(id).orElseThrow(()->new UserNotFoundException(id));
             userServiceRepo.deleteById(id);
             //PUSHING MESSAGES TO GCP
@@ -89,8 +93,9 @@ class UserServiceImpl implements UserService {
     }
 
     public ResponseEntity getAllUserRoles() {
-        List<String> roles = Roles.getAllRoles();
-        return  ResponseEntity.ok(new Gson().toJson(roles));
+        HashMap map = new HashMap();
+        map.put("user_role", Roles.getAllRoles());
+        return  ResponseEntity.ok(new Gson().toJson(map));
     }
 
     public ResponseEntity updateUserInterest(UserInterest userInterest, Long id) {
@@ -116,11 +121,12 @@ class UserServiceImpl implements UserService {
     public ResponseEntity userLogin(UserCredential userCredentials) {
         Users user = userServiceRepo.findByEmail(userCredentials.getEmail());
         if (user.getUser_password().equals(userCredentials.getUser_password())) {
-            return ResponseEntity.status(HttpStatus.OK).build();
+            JsonObject result = new JsonObject();
+            result.add("user_role", new JsonPrimitive(user.getUser_role()));
+            return ResponseEntity.ok(new Gson().toJson(result));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
     }
 
 }
