@@ -61,7 +61,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setMobile_number(user.getMobile_number());
 		newUser.setMobile_verified(user.getMobile_verified());
 		newUser.setEmail(user.getEmail());
-		if(newUser.getUser_role().equals(Roles.USER_TYPE_FB.toString())) {
+		if(user.getUser_role().equals(Roles.USER_TYPE_FB.toString())) {
 			newUser.setUser_password(null);
 		} else {
 			Users oldUser = userServiceRepo.findByEmail(user.getEmail());
