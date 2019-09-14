@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
+import java.util.ArrayList;
 
 @Entity
-@Table(name= "users",schema = "database1",uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
+@Table(name= "users",schema = "userdb",uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
 @Data
 @NoArgsConstructor
 public class Users {
@@ -49,7 +49,7 @@ public class Users {
     private String email;
 
     @Column(name="user_interests")
-    private String user_interests;
+    private ArrayList<String> user_interests;
 
     @Role
     @NotBlank(message = "user_role is mandatory")

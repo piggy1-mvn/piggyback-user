@@ -1,7 +1,6 @@
 package com.incentives.piggyback.user.controller;
 
 import com.incentives.piggyback.user.model.Users;
-import com.incentives.piggyback.user.model.UserCredential;
 import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @Validated
-@CrossOrigin()
+@CrossOrigin
 @RestController
 public class UserController {
 

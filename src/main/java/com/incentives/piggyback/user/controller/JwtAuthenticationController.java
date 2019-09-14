@@ -9,7 +9,6 @@ import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.service.UserService;
 import com.incentives.piggyback.user.util.config.springSecurityConfig.JwtTokenUtil;
-import com.incentives.piggyback.user.util.constants.Roles;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
