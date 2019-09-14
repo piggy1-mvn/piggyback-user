@@ -3,6 +3,7 @@ package com.incentives.piggyback.user.service;
 import java.util.ArrayList;
 
 import com.incentives.piggyback.user.repository.UserServiceRepository;
+import com.incentives.piggyback.user.util.constants.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +41,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setMobile_number(user.getMobile_number());
 		newUser.setMobile_verified(user.getMobile_verified());
 		newUser.setEmail(user.getEmail());
-		//newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
 		if ((user.getUser_password() == null)) {
 			newUser.setUser_password(null);
 		} else {
@@ -61,11 +61,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setMobile_number(user.getMobile_number());
 		newUser.setMobile_verified(user.getMobile_verified());
 		newUser.setEmail(user.getEmail());
-		//newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
-		if ((user.getUser_password() == null)) {
+		if(newUser.getUser_role().equals(Roles.USER_TYPE_FB.toString())) {
 			newUser.setUser_password(null);
 		} else {
-			newUser.setUser_password(bcryptEncoder.encode(user.getUser_password()));
+			Users oldUser = userServiceRepo.findByEmail(user.getEmail());
+			newUser.setUser_password(oldUser.getUser_password());
 		}
 		newUser.setUser_role(user.getUser_role());
 		newUser.setUser_type(user.getUser_type());
