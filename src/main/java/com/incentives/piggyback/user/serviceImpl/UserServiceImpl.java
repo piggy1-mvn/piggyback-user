@@ -1,4 +1,4 @@
-package com.incentives.piggyback.user.ServiceImpl;
+package com.incentives.piggyback.user.serviceImpl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

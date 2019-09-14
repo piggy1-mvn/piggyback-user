@@ -49,7 +49,7 @@ public class User {
     @Column(name="mobile_verified")
     private Boolean mobile_verified;
 
-    @Email
+    @Email()
     @NotBlank(message = "User email is mandatory")
     @Column(name="email")
     private String email;
