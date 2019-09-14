@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Data
 @NoArgsConstructor
@@ -13,5 +14,5 @@ public class UserInterest extends Users {
     private Long id;
 
     @Column(name="user_interests")
-    private String user_interests;
+    private ArrayList<String> user_interests;
 }
