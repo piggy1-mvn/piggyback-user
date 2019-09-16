@@ -1,8 +1,14 @@
 package com.incentives.piggyback.user.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import com.incentives.piggyback.user.model.FbRequest;
 import com.incentives.piggyback.user.model.JwtResponse;
 import com.incentives.piggyback.user.model.UserCredential;
 import com.incentives.piggyback.user.model.Users;
@@ -10,7 +16,9 @@ import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.service.UserService;
 import com.incentives.piggyback.user.util.config.springSecurityConfig.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +29,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 
 @Slf4j
 @RestController
@@ -44,7 +54,7 @@ public class JwtAuthenticationController {
 	private UserServiceRepository userServiceRepo;
 
 	@PostMapping("/user/login")
-	public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody UserCredential authenticationRequest)
+	public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody UserCredential authenticationRequest, HttpServletRequest request)
 			throws Exception {
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getUser_password());
 		final UserDetails userDetails = jwtInMemoryUserDetailsService
@@ -53,6 +63,17 @@ public class JwtAuthenticationController {
 		final String token = jwtTokenUtil.generateToken(userDetails,user.getUser_role());
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
+    @PostMapping("/user/authenticate_fb_user")
+    public ResponseEntity<JwtResponse> createAuthenticationTokenForFBUser(@RequestBody FbRequest authenticationRequest, HttpServletRequest request)
+            throws Exception {
+            String fb_token = request.getHeader("Authorization");
+        authenticateFBUser(authenticationRequest, fb_token);
+        final UserDetails userDetails = jwtInMemoryUserDetailsService
+                .loadUserByUsername(authenticationRequest.getEmail());
+        Users user = userServiceRepo.findByEmail(authenticationRequest.getEmail());
+        final String token = jwtTokenUtil.generateToken(userDetails,user.getUser_role());
+        return ResponseEntity.ok(new JwtResponse(token));
+    }
 
 	@PostMapping("/user/create")
 	public ResponseEntity<Users> createUser(@Valid @RequestBody Users user) {
@@ -75,5 +96,24 @@ public class JwtAuthenticationController {
 			throw new BadCredentialsException("INVALID_CREDENTIALS", e);
 		}
 	}
+    private void authenticateFBUser(FbRequest userinfo, String fbToken) throws Exception {
+        Objects.requireNonNull(userinfo.getEmail());
+        Objects.requireNonNull(userinfo.getFb_user_id());
+        Objects.requireNonNull(fbToken);
+            String authUrl = "https://graph.facebook.com/v2.5/" + userinfo.getFb_user_id() + "?fields=email&access_token=" + fbToken;
+            URL url = new URL(authUrl);
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            int code = connection.getResponseCode();
+			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String responseBody = br.lines().collect(Collectors.joining());
+            JSONObject jsonObject = new JSONObject(responseBody);
+            Users user = userServiceRepo.findByEmail(userinfo.getEmail());
+            if(!(code==HttpStatus.OK.value() && jsonObject.get("email").equals(user.getEmail()))) {
+            throw new BadCredentialsException("INVALID_CREDENTIALS");
+            }
+
+    }
 
 }
