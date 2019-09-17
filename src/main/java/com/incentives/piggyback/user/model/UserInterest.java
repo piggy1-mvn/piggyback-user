@@ -1,10 +1,11 @@
 package com.incentives.piggyback.user.model;
 
+import java.util.ArrayList;
+
+import javax.persistence.Column;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.ArrayList;
 
 @Data
 @NoArgsConstructor

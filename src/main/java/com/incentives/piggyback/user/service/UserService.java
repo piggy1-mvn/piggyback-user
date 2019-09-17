@@ -4,6 +4,8 @@ import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.model.UserInterest;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface UserService {
 
      ResponseEntity<Users> createUser(Users user);
@@ -18,9 +20,11 @@ public interface UserService {
 
      ResponseEntity<Users> deleteUser(Long id);
 
-     ResponseEntity getAllUserRoles();
+     ResponseEntity<String> getAllUserRoles();
 
-     ResponseEntity updateUserInterest(UserInterest userInterest,Long id);
+     ResponseEntity<Users> updateUserInterest(UserInterest userInterest,Long id);
 
      Users partialUpdate(UserInterest userInterest, Long id);
+
+	ResponseEntity<List<Users>> getUserWithParticularInterest(List<Long> users, List<String> interests);
 }
