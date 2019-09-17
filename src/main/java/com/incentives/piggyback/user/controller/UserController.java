@@ -32,6 +32,12 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @GetMapping("/user/role")
+    public ResponseEntity<Users> getUsersInRole(@RequestParam("user_role") String user_role) {
+        log.debug("User Service: Received GET request for getting users in role." + user_role);
+        return userService.getUsersInRole(user_role);
+    }
+
     @PutMapping("/user/{id}")
     public ResponseEntity<Users> updateUser(@PathVariable Long id, @Valid @RequestBody Users user) {
         log.debug("User Service: Received PUT request for updating user with userid."+ id);

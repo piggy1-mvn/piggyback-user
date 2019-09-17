@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 class UserServiceImpl implements UserService {
@@ -55,6 +57,17 @@ class UserServiceImpl implements UserService {
 
     public ResponseEntity<Users> getUserById(Long id) {
         return ResponseEntity.ok(userServiceRepo.findById(id).orElseThrow(()->new UserNotFoundException(id)));
+    }
+
+    public ResponseEntity<List<Users>> getUsersInRole(String user_role) {
+        List<Users> usersInRole = new ArrayList<>();
+        Iterable<Users> users = userServiceRepo.findAll();
+        users.forEach(user -> {
+            if(user.getUser_role().equals(user_role))
+                usersInRole.add(user);
+        });
+        if (!CommonUtility.isValidList(usersInRole)) throw new UserNotFoundException(user_role);
+        return ResponseEntity.ok(usersInRole);
     }
 
     public ResponseEntity<Users> updateUser(Long id, Users user) {
