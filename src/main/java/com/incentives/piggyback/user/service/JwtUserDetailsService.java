@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.util.constants.Roles;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 		Users user = userServiceRepo.findByEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
+		}
+		if(user.getUser_type().equals(Roles.USER_TYPE_FB.toString()) && user.getUser_password()==null){
+			return new User(user.getEmail(), RandomStringUtils.random(7, true, true),new ArrayList<>());
 		}
 		return new User(user.getEmail(), user.getUser_password(),
 				new ArrayList<>());

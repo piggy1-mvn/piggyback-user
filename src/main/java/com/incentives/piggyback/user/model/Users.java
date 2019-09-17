@@ -12,17 +12,12 @@ import javax.validation.constraints.*;
 import java.util.ArrayList;
 
 @Entity
-@Table(name= "users",schema = "userdb",uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
+@Table(name= "users",schema = "database1",uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
 @Data
 @NoArgsConstructor
 public class Users {
 
     @Id
-    @Email
-    @NotBlank(message = "User email is mandatory")
-    @Column(name="user_email",unique = true)
-    private String user_email;
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
