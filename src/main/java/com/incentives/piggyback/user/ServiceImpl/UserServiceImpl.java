@@ -2,6 +2,7 @@ package com.incentives.piggyback.user.ServiceImpl;
 
 import com.google.gson.Gson;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
+import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.publisher.UserEventPublisher;
@@ -61,15 +62,17 @@ class UserServiceImpl implements UserService {
 		return ResponseEntity.ok(userServiceRepo.findById(id).orElseThrow(()->new UserNotFoundException(id)));
 	}
 
-	public ResponseEntity<List<Users>> getUsersInRole(String user_role) {
+	public ResponseEntity<List<Users>> getUsersInRole(UserRoles roles) {
 		List<Users> usersInRole = new ArrayList<>();
 		Iterable<Users> users = userServiceRepo.findAll();
-		users.forEach(user -> {
-		if(user.getUser_role().equals(user_role))
+		roles.getUser_roles().forEach(role ->
+				users.forEach(user -> {
+		if(user.getUser_role().equals(role))
 			usersInRole.add(user);
-		});
+		}));
+
 		if (!CommonUtility.isValidList(usersInRole))
-			throw new UserNotFoundException(user_role);
+			throw new UserNotFoundException(roles.toString());
 
 		return ResponseEntity.ok(usersInRole);
 	}

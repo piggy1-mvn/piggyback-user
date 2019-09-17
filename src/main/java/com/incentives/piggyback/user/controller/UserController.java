@@ -1,5 +1,7 @@
 package com.incentives.piggyback.user.controller;
 
+import com.incentives.piggyback.user.model.UserCredential;
+import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.service.UserService;
@@ -34,10 +36,10 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/user/role")
-    public ResponseEntity<Users> getUsersInRole(@RequestParam("user_role") String user_role) {
-        log.debug("User Service: Received GET request for getting users in role." + user_role);
-        return userService.getUsersInRole(user_role);
+    @PostMapping("/user/role")
+    public ResponseEntity<Users> getUsersInRoles(@RequestBody UserRoles userRoles) {
+        log.debug("User Service: Received GET request for getting users in roles." + userRoles.toString());
+        return userService.getUsersInRole(userRoles);
     }
 
     @PutMapping("/user/{id}")
