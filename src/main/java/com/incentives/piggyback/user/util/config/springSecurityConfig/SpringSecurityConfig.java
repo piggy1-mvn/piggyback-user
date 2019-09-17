@@ -49,7 +49,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
 				.cors().and()
-				.authorizeRequests().antMatchers("/user/login","/user/create","/user/authenticate_fb_user").permitAll().
+				.authorizeRequests().antMatchers("/user/login","/user/create","/user/FBUserLogin").permitAll().
 				anyRequest().authenticated().and().
 				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
