@@ -1,6 +1,5 @@
 package com.incentives.piggyback.user.controller;
 
-import com.incentives.piggyback.user.model.UserCredential;
 import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.model.UserInterest;
