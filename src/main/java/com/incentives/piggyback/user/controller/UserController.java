@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 @Slf4j
@@ -49,11 +51,19 @@ public class UserController {
         log.debug("User Service: Received GET request for getting all roles available.");
         return userService.getAllUserRoles();
     }
-
+    
     @PatchMapping("/user/interest/{id}")
     public ResponseEntity<Users> updateUserInterest(@RequestBody UserInterest userInterest, @PathVariable Long id) {
         log.debug("User Service: Received PATCH request for updating user interest.");
         return userService.updateUserInterest(userInterest,id);
+    }
+    
+    @GetMapping("/user")
+    public ResponseEntity<List<Users>> getUserWithParticularInterest(
+    		@RequestParam(value = "users", required = true) List<Long> users,
+    		@RequestParam(value = "interest", required = true) List<String> interests) {
+        log.debug("User Service: Received GET request for getting all users with particular interest.");
+        return userService.getUserWithParticularInterest(users, interests);
     }
 
 }
