@@ -37,7 +37,7 @@ public class UserController {
 
     @PostMapping("/user/role")
     public ResponseEntity<Users> getUsersInRoles(@RequestBody UserRoles userRoles) {
-        log.debug("User Service: Received GET request for getting users in roles." + userRoles.toString());
+        log.debug("User Service: Received POST request for getting users in roles." + userRoles.toString());
         return userService.getUsersInRole(userRoles);
     }
 
