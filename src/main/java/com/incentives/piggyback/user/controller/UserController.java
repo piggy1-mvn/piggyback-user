@@ -58,7 +58,7 @@ public class UserController {
         return userService.updateUserInterest(userInterest,id);
     }
     
-    @GetMapping("/user")
+    @GetMapping("/userwithinterest")
     public ResponseEntity<List<Users>> getUserWithParticularInterest(
     		@RequestParam(value = "users", required = true) List<Long> users,
     		@RequestParam(value = "interest", required = true) List<String> interests) {
