@@ -1,10 +1,12 @@
 package com.incentives.piggyback.user.util.config;
 
-import com.incentives.piggyback.user.model.Users;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
+import com.incentives.piggyback.user.model.Users;
+
+@SuppressWarnings("deprecation")
 @Configuration
 public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
 
