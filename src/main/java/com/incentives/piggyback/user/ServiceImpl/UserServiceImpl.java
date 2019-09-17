@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -88,13 +89,13 @@ class UserServiceImpl implements UserService {
             return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity getAllUserRoles() {
-        HashMap map = new HashMap();
+    public ResponseEntity<String> getAllUserRoles() {
+        HashMap<String, ArrayList<String>> map = new HashMap<>();
         map.put("user_role", Roles.getAllRoles());
         return  ResponseEntity.ok(new Gson().toJson(map));
     }
 
-    public ResponseEntity updateUserInterest(UserInterest userInterest, Long id) {
+    public ResponseEntity<Users> updateUserInterest(UserInterest userInterest, Long id) {
         Users updatedUser =partialUpdate(userInterest,id);
         //PUSHING MESSAGES TO GCP
         messagingGateway.sendToPubsub(

@@ -45,13 +45,13 @@ public class UserController {
     }
 
     @GetMapping("/user/roles")
-    public ResponseEntity getAllUserRoles() {
+    public ResponseEntity<String> getAllUserRoles() {
         log.debug("User Service: Received GET request for getting all roles available.");
         return userService.getAllUserRoles();
     }
 
     @PatchMapping("/user/interest/{id}")
-    public ResponseEntity updateUserInterest(@RequestBody UserInterest userInterest, @PathVariable Long id) {
+    public ResponseEntity<Users> updateUserInterest(@RequestBody UserInterest userInterest, @PathVariable Long id) {
         log.debug("User Service: Received PATCH request for updating user interest.");
         return userService.updateUserInterest(userInterest,id);
     }
