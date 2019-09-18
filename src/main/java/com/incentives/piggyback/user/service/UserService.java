@@ -1,11 +1,11 @@
 package com.incentives.piggyback.user.service;
 
-import java.util.List;
-
+import com.incentives.piggyback.user.model.UserRoles;
+import com.incentives.piggyback.user.model.Users;
+import com.incentives.piggyback.user.model.UserInterest;
 import org.springframework.http.ResponseEntity;
 
-import com.incentives.piggyback.user.model.UserInterest;
-import com.incentives.piggyback.user.model.Users;
+import java.util.List;
 
 public interface UserService {
 
@@ -14,6 +14,8 @@ public interface UserService {
      Iterable<Users> getAllUser();
 
      ResponseEntity<Users> getUserById(Long id);
+
+     ResponseEntity getUsersInRole(UserRoles role);
 
      ResponseEntity<Users> updateUser(Long id, Users user);
 

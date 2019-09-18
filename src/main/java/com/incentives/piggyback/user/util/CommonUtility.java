@@ -1,7 +1,7 @@
 package com.incentives.piggyback.user.util;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 public class CommonUtility {
@@ -55,5 +55,4 @@ public class CommonUtility {
 	public static boolean isNotEmpty(String attrKey) {
 		return !attrKey.isEmpty();
 	}
-
 }
