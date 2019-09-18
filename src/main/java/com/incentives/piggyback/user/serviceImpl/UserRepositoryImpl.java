@@ -13,7 +13,7 @@ import javax.persistence.Query;
 @Transactional(readOnly = true)
 public class UserRepositoryImpl implements UserRepositoryCustom {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public Users findByEmail(String email) {
@@ -22,4 +22,5 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         query.setParameter(1, email);
         return (Users) query.getSingleResult();
     }
+
 }
