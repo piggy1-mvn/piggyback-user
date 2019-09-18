@@ -100,20 +100,19 @@ public class JwtAuthenticationController {
         Objects.requireNonNull(userinfo.getEmail());
         Objects.requireNonNull(userinfo.getFb_user_id());
         Objects.requireNonNull(fbToken);
-            String authUrl = "https://graph.facebook.com/v2.5/" + userinfo.getFb_user_id() + "?fields=email&access_token=" + fbToken;
-            URL url = new URL(authUrl);
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-            int code = connection.getResponseCode();
-			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String responseBody = br.lines().collect(Collectors.joining());
-            JSONObject jsonObject = new JSONObject(responseBody);
-            Users user = userServiceRepo.findByEmail(userinfo.getEmail());
-            if(!(code==HttpStatus.OK.value() && jsonObject.get("email").equals(user.getEmail()))) {
-            throw new BadCredentialsException("INVALID_CREDENTIALS");
-            }
-
+		String authUrl = "https://graph.facebook.com/v2.5/" + userinfo.getFb_user_id() + "?fields=email&access_token=" + fbToken;
+		URL url = new URL(authUrl);
+		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+		connection.setRequestMethod("GET");
+		connection.connect();
+		int code = connection.getResponseCode();
+		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		String responseBody = br.lines().collect(Collectors.joining());
+		JSONObject jsonObject = new JSONObject(responseBody);
+		Users user = userServiceRepo.findByEmail(userinfo.getEmail());
+		if(!(code==HttpStatus.OK.value() && jsonObject.get("email").equals(user.getEmail()))) {
+			throw new BadCredentialsException("INVALID_CREDENTIALS");
+		}
     }
 
 }
