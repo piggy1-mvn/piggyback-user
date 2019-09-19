@@ -135,11 +135,11 @@ class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<List<Users>> getUserWithParticularInterest(List<Long> users, List<String> interests) {
+	public ResponseEntity<List<Users>> getUserWithParticularInterest(List<Long> users, String interest) {
 		Iterable<Users> userDataList = userServiceRepo.findAllById(users);
 		List<Users> matchedUsersList = new ArrayList<Users>();
 		userDataList.forEach(user -> {
-			if (user.getUser_interests().containsAll(interests)) {
+			if (user.getUser_interests().contains(interest)) {
 				matchedUsersList.add(user);
 			}
 		});
