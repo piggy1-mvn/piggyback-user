@@ -30,7 +30,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
-		if(user.getUser_type().equals(Roles.USER_TYPE_FB.toString()) && user.getUser_password()==null){
+		if(user.getUser_password()==null){
 			return new User(user.getEmail(), RandomStringUtils.random(7, true, true),new ArrayList<>());
 		}
 		return new User(user.getEmail(), user.getUser_password(),

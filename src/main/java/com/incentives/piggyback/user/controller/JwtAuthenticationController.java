@@ -63,6 +63,7 @@ public class JwtAuthenticationController {
 		final String token = jwtTokenUtil.generateToken(userDetails,user.getUser_role());
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
+
     @PostMapping("/user/FBUserLogin")
     public ResponseEntity<JwtResponse> createAuthenticationTokenForFBUser(@RequestBody FbRequest authenticationRequest, HttpServletRequest request)
             throws Exception {
