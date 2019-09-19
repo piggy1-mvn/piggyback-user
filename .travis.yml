@@ -1,33 +1,44 @@
-language:
-  java
+language: java
 
-sudo:
-  false
+sudo: false
 
 cache:
   directories:
-    - $HOME/.m2
-    - $HOME/.sonar/cache
+    - "$HOME/.m2"
+    - "$HOME/.sonar/cache"
+    - "$HOME/google-cloud-sdk"
 
 services:
   - docker
 
-install:
-  skip
+before_install:
+  - openssl aes-256-cbc -k "$DECRYPT_KEY" -in secret-storage.json.enc -out secret-storage.json -d -md sha256
+
+install: skip
 
 addons:
   sonarcloud:
-    organization: "piggyback"
+    organization: piggyback
 
 script:
-  - mvn -Pprod clean verify sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user
+  - mvn clean verify sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user
   - docker build -t piggy1/user .
-
-deploy:
-  provider: script
-  script: bash docker_push
-  on:
-    branch: master
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push piggy1/user
+  - gcloud version || true
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+  - source /home/travis/google-cloud-sdk/path.bash.inc
+  - gcloud version
+  - mvn -Pprod clean verify
+  - docker build -t user-prod .
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker tag user-prod gcr.io/absolute-text-251105/piggy1-user:v1; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then cat secret-storage.json | docker login -u _json_key --password-stdin https://gcr.io; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push gcr.io/absolute-text-251105/piggy1-user:v1; fi
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+env:
+  global:
+    secure: D+3k4BDkOR5RqKn5xDHk7aJxEVYjxpMjn9BGQUohAkdOWaxSaw6q04yv0wFZjsEESK+wq4Ba15hac4SAeredxdiZbJxyTFdndYc51B+whqgoEoko5tuP7PBoaclTikGHQ0fV1U22F0CWPCDsHVnOf6mpmCytDWfhBcMXY1z7tmmZU27PRY47nNUhFWRnpN/AZ7hFJcs2h3WbgKYM1lkOYQzmThoR9X4f1iNGVLL46kSPFfEcwhDRZYxDpy+h+HtuRZL1foEeh40nS6MrBxeD9IsNr7YHAudtliSGJ33VdngHe6ZkTUO8Isx1Z9qp4Gpqm3JFEr4HLPYXJG7Z9Ua2n3ja/YrptrgShtS8A9dNUGE+lU+S6Sz2MdUwljqzl23H28K8/NAV5jXwPx1MPSGfHuWsfc98Q5B4PzuCTkNboXPkSl6UTrV9Y7LYwH8P/VnnPZIVeEJVBdvQFxdOzAOLBgc5drOl45l2j60xpNYS59zgSXgw5iG2m7m40SFSe3jklkPz/Juzaj/aSF9rLoDUORLCVb3sHf5PGRfkI+aKkCkTKJxrThUnUf+gzgUBLi8CIzEigTCfdNxIBc/T9nEp2+Xh8AGUeJBlM2nTNeBuQgjkUZ36UWCxbRLpEUCwI5qjjMzkNvlH3Ygmj8CQ2+auWeseQad56HDwbX/IHTeiXMs=
+
