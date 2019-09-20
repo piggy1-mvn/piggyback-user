@@ -1,33 +1,42 @@
-language:
-  java
+language: java
 
-sudo:
-  false
+sudo: false
 
 cache:
   directories:
-    - $HOME/.m2
-    - $HOME/.sonar/cache
+  - "$HOME/.m2"
+  - "$HOME/.sonar/cache"
+  - "$HOME/google-cloud-sdk"
 
 services:
-  - docker
+- docker
 
-install:
-  skip
+before_install:
+- openssl aes-256-cbc -k "$DECRYPT_KEY" -in secret-storage.json.enc -out secret-storage.json -d -md sha256
+
+install: skip
 
 addons:
   sonarcloud:
-    organization: "piggyback"
+    organization: piggyback
 
 script:
-  - mvn -Pprod clean verify sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user
-  - docker build -t piggy1/user .
-
-deploy:
-  provider: script
-  script: bash docker_push
-  on:
-    branch: master
+- mvn clean verify sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user
+- docker build -t piggy1/user .
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker push piggy1/user
+- gcloud version || true
+- if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+- source /home/travis/google-cloud-sdk/path.bash.inc
+- gcloud version
+- mvn -Pprod clean verify
+- docker build -t user-prod .
+- if [ "$TRAVIS_BRANCH" = "master" ]; then docker tag user-prod gcr.io/absolute-text-251105/piggy1-user:v1; fi
+- if [ "$TRAVIS_BRANCH" = "master" ]; then cat secret-storage.json | docker login -u _json_key --password-stdin https://gcr.io; fi
+- if [ "$TRAVIS_BRANCH" = "master" ]; then docker push gcr.io/absolute-text-251105/piggy1-user:v1; fi
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
+env:
+  global:
+    secure: ZVZ4IOdvmZkChg/iFNIJHmKeQTaO9yQBCfmXfdZHI3vjU7px2Hfuh3qoBoGWbTVIdlAoFMm3YdkkpdEypV3eYqk31AHlIWip/SqFrhb6hb+eoKa4z+QvSofXv6UzfLv5/INSmC6p91IwZOM0mmPHeA57grmwuoGGRqSyL0PNB9vWoG5Z4AJy3bPGzXg+RUxuyclZBkZs86KPEc2sfdGYBFstO8LCfUleo/GGGgARGuReyqKYlWG0vgikaxBvKthqcK8MvmNk9bYcpJecQxYl9G07Lv+Sx4fG1GlCxsOaxYGV3XZ5j/4mfmbyZgblZnQbzkKtcS/vn2qBD5VwFzVwYHEhfFGX+T8+aMLim2T/5Pml9IeD5auy0do4Vz6hrVMN+swrVpjNhG72i/kinLcmVsPoYL5jKZdrfv7ct3sbwaMSZiDotJLFWNtMaH3bumcVEnytgJZpPlcY/jnapPoRt5IBTeSY9NmZBM9V+DHomK5uMAJUpSiSBhQaY0YeZBJ7maOCoxjEXe5yPW4PXsKiKsOoQ0hk+Eg2+fOkMkcnVaJKPEnhCJ3QDsCvF7mZP6dXa/fIwMut4qLen0bUyr0pTC6pxSELzd3LkpCWpwzc9+xnI6qyVXt4TlhWjY7WnH0Fub5svIK/jfOBCT1g8cDvgM5G+nmzsN/NAXLgl0fDHgk=
