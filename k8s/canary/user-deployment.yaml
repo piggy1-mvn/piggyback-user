@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: piggyback-user-canary
+  namespace: production
 #  labels:
 #    app: piggyback-user
 #    env: canary
