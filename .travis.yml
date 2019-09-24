@@ -20,10 +20,10 @@ addons:
     organization: piggyback
 
 script:
-- if [ $TRAVIS_BRANCH != "master"]; then mvn clean verify sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user; fi
-- if [ $TRAVIS_BRANCH != "master"]; then docker build -t piggy1/user .; fi
-- if [ $TRAVIS_BRANCH != "master"]; then echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin; fi
-- if [ $TRAVIS_BRANCH != "master"]; then docker push piggy1/user; fi
+- if [ $TRAVIS_BRANCH != "master" ]; then mvn clean verify sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user; fi
+- if [ $TRAVIS_BRANCH != "master" ]; then docker build -t piggy1/user .; fi
+- if [ $TRAVIS_BRANCH != "master" ]; then echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin; fi
+- if [ $TRAVIS_BRANCH != "master" ]; then docker push piggy1/user; fi
 - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then mvn -Pprod clean verify; fi
 - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then docker build -t user-prod .; fi
 - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then docker tag user-prod gcr.io/absolute-text-251105/piggy1-user:v4; fi
