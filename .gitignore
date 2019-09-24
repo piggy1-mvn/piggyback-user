@@ -4,3 +4,4 @@ target/
 user.iml
 .classpath
 .project
+kub-deploy.json
