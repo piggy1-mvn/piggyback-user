@@ -60,7 +60,7 @@ public class JwtAuthenticationController {
 		final UserDetails userDetails = jwtInMemoryUserDetailsService
 				.loadUserByUsername(authenticationRequest.getEmail());
 		Users user = userServiceRepo.findByEmail(authenticationRequest.getEmail());
-		final String token = jwtTokenUtil.generateToken(userDetails,user.getUser_role());
+		final String token = jwtTokenUtil.generateToken(userDetails, user.getUser_role(), user.getId());
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
@@ -72,7 +72,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = jwtInMemoryUserDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());
         Users user = userServiceRepo.findByEmail(authenticationRequest.getEmail());
-        final String token = jwtTokenUtil.generateToken(userDetails,user.getUser_role());
+        final String token = jwtTokenUtil.generateToken(userDetails, user.getUser_role(), user.getId());
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
