@@ -23,4 +23,4 @@ push:
 deploy: gconfig
 	@kubectl apply -f k8s/canary/user-deployment.yaml
 # https://github.com/kubernetes/kubernetes/issues/27081#issuecomment-238078103
-	@kubectl patch deployment $(IMAGE_NAME) -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+#	@kubectl patch deployment $(IMAGE_NAME) -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
