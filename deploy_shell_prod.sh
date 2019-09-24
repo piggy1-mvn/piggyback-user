@@ -11,4 +11,4 @@ source $HOME/google-cloud-sdk/path.bash.inc
 # Make sure kubectl is updated to latest version
 gcloud components update kubectl
 
-make gauth build push deploy -f Makefile_prod
+make gauth deploy -f Makefile_prod
