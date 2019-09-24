@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: piggyback-user-production
+#  labels:
+#    app: piggyback-user
+#    env: production
+spec:
+  replicas: 2
+  progressDeadlineSeconds: 10
+#  selector:
+#    matchLabels:
+#      app: piggyback-user
+#      env: production
+#  strategy:
+#    rollingUpdate:
+#      maxSurge: 25%
+#      maxUnavailable: 25%
+#    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: piggyback-user
+        env: production
+    spec:
+      containers:
+      - image: gcr.io/absolute-text-251105/piggy1-user:v2
+        name: piggyback-prod-runner-user
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        imagePullPolicy: Always
+        ports:
+        - name: piggyback-user
+          containerPort: 8083
+        readinessProbe:
+          httpGet:
+            path: /swagger-ui.html
+            port: 8083
+#        livenessProbe:
+#          httpGet:
+#            path: /swagger-ui.html
+#            port: 8083
+#          initialDelaySeconds: 30
+#          timeoutSeconds: 10
+#          failureThreshold: 1      
+status: {}
