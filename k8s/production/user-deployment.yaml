@@ -6,7 +6,7 @@ metadata:
 #    app: piggyback-user
 #    env: production
 spec:
-  replicas: 3
+  replicas: 2
   progressDeadlineSeconds: 10
 #  selector:
 #    matchLabels:
