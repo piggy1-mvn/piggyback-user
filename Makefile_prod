@@ -15,6 +15,6 @@ gconfig:
 	@gcloud auth configure-docker
 
 deploy: gconfig
-	@kubectl apply -f k8s/production/user-deployment.yaml -n production
+	@kubectl apply -f k8s/production/user-deployment.yaml
 # https://github.com/kubernetes/kubernetes/issues/27081#issuecomment-238078103
-	@kubectl patch deployment $(IMAGE_NAME) -n production -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+	@kubectl patch deployment $(IMAGE_NAME) -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
