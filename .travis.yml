@@ -13,6 +13,7 @@ services:
 
 before_install:
 - openssl aes-256-cbc -k "$DECRYPT_KEY" -in secret-storage.json.enc -out secret-storage.json -d -md sha256
+- openssl aes-256-cbc -k "$DECRYPT_KEY" -in kub-deploy.json.enc -out kub-deploy.json -d -md sha256
 
 install: skip
 
