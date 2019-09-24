@@ -16,4 +16,3 @@ gconfig:
 
 deploy: gconfig
 	@kubectl apply -f k8s/production/user-deployment.yaml
-	@kubectl autoscale deployment piggyback-user-production --max 5 --min 2 --cpu-percent 65
