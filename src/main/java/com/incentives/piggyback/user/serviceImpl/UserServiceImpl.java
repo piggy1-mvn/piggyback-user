@@ -1,10 +1,22 @@
 package com.incentives.piggyback.user.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
 import com.google.gson.Gson;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
+import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
-import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.publisher.UserEventPublisher;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.service.JwtUserDetailsService;
@@ -12,15 +24,6 @@ import com.incentives.piggyback.user.service.UserService;
 import com.incentives.piggyback.user.util.CommonUtility;
 import com.incentives.piggyback.user.util.constants.Constant;
 import com.incentives.piggyback.user.util.constants.Roles;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 
 @Service
 class UserServiceImpl implements UserService {
@@ -66,9 +69,9 @@ class UserServiceImpl implements UserService {
 		List<Users> usersInRole = new ArrayList<>();
 		Iterable<Users> users = userServiceRepo.findAll();
 		roles.getUser_roles().forEach(role ->
-				users.forEach(user -> {
-		if(user.getUser_role().equals(role))
-			usersInRole.add(user);
+		users.forEach(user -> {
+			if(user.getUser_role().equals(role))
+				usersInRole.add(user);
 		}));
 
 		if (!CommonUtility.isValidList(usersInRole))
@@ -135,12 +138,15 @@ class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<List<Users>> getUserWithParticularInterest(List<Long> users, String interest) {
-		Iterable<Users> userDataList = userServiceRepo.findAllById(users);
+	public ResponseEntity<List<Users>> getUserWithParticularInterest(String users, String interest) {
+		List<Long> usersIdList = Arrays.asList(users.split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
+		Iterable<Users> userDataList = userServiceRepo.findAllById(usersIdList);
 		List<Users> matchedUsersList = new ArrayList<Users>();
 		userDataList.forEach(user -> {
-			if (user.getUser_interests().contains(interest)) {
-				matchedUsersList.add(user);
+			if (CommonUtility.isValidList(user.getUser_interests())) {
+				if (user.getUser_interests().contains(interest)) {
+					matchedUsersList.add(user);
+				}
 			}
 		});
 		if (! CommonUtility.isValidList(matchedUsersList)) throw new UsernameNotFoundException("No preferences matched");
