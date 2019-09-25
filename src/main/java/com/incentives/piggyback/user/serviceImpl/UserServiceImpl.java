@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -149,7 +148,7 @@ class UserServiceImpl implements UserService {
 				}
 			}
 		});
-		if (! CommonUtility.isValidList(matchedUsersList)) throw new UsernameNotFoundException("No preferences matched");
+		if (! CommonUtility.isValidList(matchedUsersList)) throw new UserNotFoundException("No preferences matched");
 		return ResponseEntity.ok(matchedUsersList);
 	}
 
