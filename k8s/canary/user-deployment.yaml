@@ -3,21 +3,9 @@ kind: Deployment
 metadata:
   name: piggyback-user-canary
   namespace: production
-#  labels:
-#    app: piggyback-user
-#    env: canary
 spec:
   replicas: 1
   progressDeadlineSeconds: 10
-#  selector:
-#    matchLabels:
-#      app: piggyback-user
-#      env: canary
-#  strategy:
-#    rollingUpdate:
-#      maxSurge: 25%
-#      maxUnavailable: 25%
-#    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -25,7 +13,7 @@ spec:
         env: canary
     spec:
       containers:
-      - image: gcr.io/absolute-text-251105/piggy1-user:v7
+      - image: gcr.io/absolute-text-251105/piggy1-user:v6
         name: piggyback-prod-runner-user
         resources:
           limits:
@@ -33,17 +21,10 @@ spec:
             cpu: "500m"
         imagePullPolicy: Always
         ports:
-        - name: piggyback-user
+        - name: piggy-user
           containerPort: 8083
         readinessProbe:
           httpGet:
             path: /swagger-ui.html
             port: 8083
-#        livenessProbe:
-#          httpGet:
-#            path: /swagger-ui.html
-#            port: 8083
-#          initialDelaySeconds: 30
-#          timeoutSeconds: 10
-#          failureThreshold: 1      
 status: {}
