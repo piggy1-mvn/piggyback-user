@@ -25,7 +25,7 @@ spec:
         env: production
     spec:
       containers:
-      - image: gcr.io/absolute-text-251105/piggy1-user:v5
+      - image: gcr.io/absolute-text-251105/piggy1-user:v6
         name: piggyback-prod-runner-user
         resources:
           limits:
