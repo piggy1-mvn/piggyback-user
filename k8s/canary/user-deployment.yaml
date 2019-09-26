@@ -12,7 +12,7 @@ spec:
         app: piggyback-user
         env: canary
     spec:
-     volumes:
+      volumes:
       - name: google-cloud-key
         secret:
           secretName: pubsub-key
