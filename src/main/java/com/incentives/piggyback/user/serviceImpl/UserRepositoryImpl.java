@@ -1,7 +1,5 @@
 package com.incentives.piggyback.user.serviceImpl;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -26,10 +24,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		return (Users) query.getSingleResult();
 	}
 
-	@Override
-	public List<Users> findByUserIds(List<Long> ids) {
-		List<Users> resultList = entityManager.createQuery("SELECT p FROM users p WHERE p.id IN :ids").setParameter("ids", ids).getResultList();
-		return resultList;
-	}
+//	@Override
+//	public List<Users> findById(List<Long> ids) {
+//		List<Users> resultList = entityManager.createQuery("SELECT p FROM users p WHERE p.id IN :ids").setParameter("ids", ids).getResultList();
+//		return resultList;
+//	}
 
 }
