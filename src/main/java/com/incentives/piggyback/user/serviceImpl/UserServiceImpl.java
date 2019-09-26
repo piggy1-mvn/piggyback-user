@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.incentives.piggyback.offers.utils.AspectLogging;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
 import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.model.UserRoles;
