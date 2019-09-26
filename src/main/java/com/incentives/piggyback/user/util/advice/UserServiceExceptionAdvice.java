@@ -20,32 +20,33 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ControllerAdvice
 public class UserServiceExceptionAdvice {
-        @ResponseBody
-        @ExceptionHandler(UserNotFoundException.class)
-        @ResponseStatus(HttpStatus.NOT_FOUND)
-        String userNotFoundHandler(UserNotFoundException ex) {
+	
+	@ResponseBody
+	@ExceptionHandler(UserNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	String userNotFoundHandler(UserNotFoundException ex) {
 
-                return ex.getMessage();
-        }
+		return ex.getMessage();
+	}
 
-        @ResponseBody
-        @ExceptionHandler(IOException.class)
-        @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-        public ResponseEntity<String> InvalidCredentials(IOException ex) {
+	@ResponseBody
+	@ExceptionHandler(IOException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ResponseEntity<String> InvalidCredentials(IOException ex) {
 
-                return error(UNAUTHORIZED, ex);
-        }
+		return error(UNAUTHORIZED, ex);
+	}
 
-        @ResponseBody
-        @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-        @ExceptionHandler({DataIntegrityViolationException.class})
-        public ResponseEntity<String>  sqlConstraintViolationException(DataIntegrityViolationException ex) throws IOException {
-                return error(BAD_REQUEST, ex);
-        }
+	@ResponseBody
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler({DataIntegrityViolationException.class})
+	public ResponseEntity<String>  sqlConstraintViolationException(DataIntegrityViolationException ex) throws IOException {
+		return error(BAD_REQUEST, ex);
+	}
 
-        private ResponseEntity<String> error(HttpStatus status, Exception e) {
-                log.error("Exception : ", e);
-                return ResponseEntity.status(status).body(e.getMessage());
+	private ResponseEntity<String> error(HttpStatus status, Exception e) {
+		log.error("Exception : ", e);
+		return ResponseEntity.status(status).body(e.getMessage());
 
-        }
+	}
 }
