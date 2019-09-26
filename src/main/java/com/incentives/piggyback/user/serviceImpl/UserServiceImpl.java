@@ -7,11 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.incentives.piggyback.offers.utils.AspectLogging;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
 import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.model.UserRoles;
@@ -33,6 +36,7 @@ class UserServiceImpl implements UserService {
 	@Autowired
 	private UserEventPublisher.PubsubOutboundGateway messagingGateway;
 
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
@@ -138,8 +142,10 @@ class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseEntity<List<Users>> getUserWithParticularInterest(String users, String interest) {
+		logger.info("getUserWithParticularInterest called for users {} interests {}", users, interest);
 		List<Long> usersIdList = Arrays.asList(users.split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
 		Iterable<Users> userDataList = userServiceRepo.findAllById(usersIdList);
+		logger.info("getUserWithParticularInterest userDataList", userDataList);
 		List<Users> matchedUsersList = new ArrayList<Users>();
 		userDataList.forEach(user -> {
 			if (CommonUtility.isValidList(user.getUser_interests())) {
@@ -148,6 +154,7 @@ class UserServiceImpl implements UserService {
 				}
 			}
 		});
+		logger.info("getUserWithParticularInterest matchedUsersList", matchedUsersList);
 		if (! CommonUtility.isValidList(matchedUsersList)) throw new UserNotFoundException("No preferences matched");
 		return ResponseEntity.ok(matchedUsersList);
 	}
