@@ -67,7 +67,7 @@ public class UserController {
     
     @GetMapping("/user/particular/interest")
     public ResponseEntity<List<Users>> getUserWithParticularInterest(
-    		@RequestParam(value = "users", required = true) List<Long> users,
+    		@RequestParam(value = "users", required = true) String users,
     		@RequestParam(value = "interest", required = true) String interest) {
         log.debug("User Service: Received GET request for getting all users with particular interest.");
         return userService.getUserWithParticularInterest(users, interest);
