@@ -27,5 +27,5 @@ public interface UserService {
 
      Users partialUpdate(UserInterest userInterest, Long id);
 
-	ResponseEntity<List<Users>> getUserWithParticularInterest(List<Long> users, String interest);
+	ResponseEntity<List<Users>> getUserWithParticularInterest(String users, String interest);
 }
