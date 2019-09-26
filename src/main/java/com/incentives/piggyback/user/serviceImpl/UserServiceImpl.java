@@ -143,8 +143,9 @@ class UserServiceImpl implements UserService {
 	public ResponseEntity<List<Users>> getUserWithParticularInterest(String users, String interest) {
 		logger.info("getUserWithParticularInterest called for users {} interests {}", users, interest);
 		List<Long> usersIdList = Arrays.asList(users.split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
-		Iterable<Users> userDataList = userServiceRepo.findAllById(usersIdList);
-		logger.info("getUserWithParticularInterest userDataList", userDataList);
+		Iterable<Users> userDataList = userServiceRepo.findByUserIds(usersIdList);
+		Iterable<Users> userDataList1 = userServiceRepo.findAllById(usersIdList);
+		logger.info("getUserWithParticularInterest userDataList {} userDataList1 {}", userDataList, userDataList1);
 		List<Users> matchedUsersList = new ArrayList<Users>();
 		userDataList.forEach(user -> {
 			if (CommonUtility.isValidList(user.getUser_interests())) {
@@ -153,8 +154,10 @@ class UserServiceImpl implements UserService {
 				}
 			}
 		});
-		logger.info("getUserWithParticularInterest matchedUsersList", matchedUsersList);
-		if (! CommonUtility.isValidList(matchedUsersList)) throw new UserNotFoundException("No preferences matched");
+		logger.info("getUserWithParticularInterest matchedUsersList {}", matchedUsersList);
+		if (! CommonUtility.isValidList(matchedUsersList)) {
+			throw new UserNotFoundException("No preferences matched");
+		}
 		return ResponseEntity.ok(matchedUsersList);
 	}
 
