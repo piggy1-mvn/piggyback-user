@@ -1,7 +1,7 @@
 package com.incentives.piggyback.user.util.constants;
 
 public interface Constant {
-    String USER_PUBLISHER_TOPIC = "userEvents";
+    String USER_PUBLISHER_TOPIC = "user.events.publish";
     String USER_SOURCE_ID = "2";
 
     String USER_CREATED_EVENT = "User Events Created";
