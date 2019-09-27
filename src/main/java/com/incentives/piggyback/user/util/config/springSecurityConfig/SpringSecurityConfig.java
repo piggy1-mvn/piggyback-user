@@ -49,22 +49,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
-				.cors().and()
-				.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/user").permitAll()
-				.antMatchers(HttpMethod.GET, "/user/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/user/login").permitAll()
-				.antMatchers(HttpMethod.POST, "/user/create").permitAll()
-				.antMatchers(HttpMethod.POST, "/user/FBUserLogin").permitAll()
-				.antMatchers(HttpMethod.GET, "/v2/api-docs",
-						"/configuration/ui",
-						"/swagger-resources/**",
-						"/configuration/security",
-						"/swagger-ui.html",
-						"/webjars/**").permitAll()
-				.anyRequest().authenticated().and()
-				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		.cors().and()
+		.authorizeRequests()
+		.antMatchers("/user/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/user").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/login").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/create").permitAll()
+		.antMatchers(HttpMethod.POST, "/user/FBUserLogin").permitAll()
+		.antMatchers(HttpMethod.GET, "/v2/api-docs",
+				"/configuration/ui",
+				"/swagger-resources/**",
+				"/configuration/security",
+				"/swagger-ui.html",
+				"/webjars/**").permitAll()
+		.anyRequest().authenticated().and()
+		.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+		.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 }
