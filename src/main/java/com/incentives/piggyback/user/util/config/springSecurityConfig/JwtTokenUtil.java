@@ -1,22 +1,20 @@
 package com.incentives.piggyback.user.util.config.springSecurityConfig;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 
 import static com.incentives.piggyback.user.util.constants.Constant.JWT_TOKEN_VALIDITY;
 
@@ -63,8 +61,10 @@ public class JwtTokenUtil implements Serializable {
 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+		String token =  Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000)).signWith(SignatureAlgorithm.HS512, secret).compact();
+		log.info("Token generated" + token);
+		return token;
 	}
 
 	public Boolean canTokenBeRefreshed(String token) {
