@@ -1,18 +1,18 @@
 package com.incentives.piggyback.user.controller;
 
+import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
-import com.incentives.piggyback.user.model.UserInterest;
 import com.incentives.piggyback.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Validated
@@ -71,6 +71,12 @@ public class UserController {
     		@RequestParam(value = "interest", required = true) String interest) {
         log.debug("User Service: Received GET request for getting all users with particular interest.");
         return userService.getUserWithParticularInterest(users, interest);
+    }
+
+    @RequestMapping(method = RequestMethod.HEAD)
+    @ResponseBody
+    public Integer isValidUser() {
+        return HttpStatus.SC_ACCEPTED;
     }
 
 }
