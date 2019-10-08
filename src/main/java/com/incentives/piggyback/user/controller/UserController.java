@@ -5,7 +5,6 @@ import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -75,8 +74,8 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.HEAD)
     @ResponseBody
-    public Integer isValidUser() {
-        return HttpStatus.SC_ACCEPTED;
+    public ResponseEntity<String> isValidUser() {
+        return ResponseEntity.ok("ValidUser");
     }
 
 }
