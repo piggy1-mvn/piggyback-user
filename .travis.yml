@@ -22,11 +22,11 @@ addons:
     organization: piggyback
 
 script:
-- if [ $TRAVIS_BRANCH != "master" ]; then mvn clean verify sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user; fi
+- if [ $TRAVIS_BRANCH != "master" ]; then mvn clean verify -B sonar:sonar -Dsonar.projectKey=piggy1-mvn_piggyback-user -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn; fi
 - if [ $TRAVIS_BRANCH != "master" ]; then docker build -t piggy1/user .; fi
 - if [ $TRAVIS_BRANCH != "master" ]; then echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin; fi
 - if [ $TRAVIS_BRANCH != "master" ]; then docker push piggy1/user; fi
-- if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then mvn -Pprod clean verify; fi
+- if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then mvn -Pprod clean verify -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn; fi
 - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then cat secret-storage.json | docker login -u _json_key --password-stdin https://gcr.io; fi
 - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then chmod 777 deploy_shell_canary.sh; fi
 - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then ./deploy_shell_canary.sh; fi
