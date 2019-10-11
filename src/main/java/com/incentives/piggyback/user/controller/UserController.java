@@ -72,8 +72,7 @@ public class UserController {
         return userService.getUserWithParticularInterest(users, interest);
     }
 
-    @RequestMapping(method = RequestMethod.HEAD)
-    @ResponseBody
+    @RequestMapping(path = "/user",method = RequestMethod.HEAD)
     public ResponseEntity<String> isValidUser() {
         return ResponseEntity.ok("ValidUser");
     }
