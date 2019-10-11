@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 
 @Entity
@@ -63,11 +66,15 @@ public class Users {
     @Column(name="device_id")
     private String device_id;
 
+    @Lob
+    @Column(name="user_rsa",length = 512)
+    private String user_rsa;
+
     @Override
     public String toString() {
         return "User [userId=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", user_password="
                 + user_password + ", mobile_number=" + mobile_number + ",mobile_verified" + mobile_verified + ",email " + email + ",user_interests " + user_interests
-                + ",user_role" + user_type + ",device_id " + device_id +"]";
+                + ",user_role" + user_type + ",device_id " + device_id +",user_rsa_token " + user_rsa+ "]";
     }
 
 }
