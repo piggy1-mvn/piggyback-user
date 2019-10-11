@@ -17,7 +17,9 @@ spec:
         secret:
           secretName: pubsub-key
       containers:
+
       - image: gcr.io/omega-palace-254907/piggy1-user:v17
+
         name: piggyback-prod-runner-user
         volumeMounts:
           - name: google-cloud-key
