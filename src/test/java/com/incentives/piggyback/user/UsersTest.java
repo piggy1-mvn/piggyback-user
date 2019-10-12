@@ -2,7 +2,6 @@ package com.incentives.piggyback.user;
 
 import com.incentives.piggyback.user.controller.UserController;
 import com.incentives.piggyback.user.model.Users;
-import com.incentives.piggyback.user.publisher.UserEventPublisher;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.service.UserService;
 import org.junit.Before;
@@ -37,9 +36,6 @@ public class UsersTest {
 
     @Mock
     private UserServiceRepository userServiceRepo;
-
-    @Mock
-    private UserEventPublisher.PubsubOutboundGateway messagingGatewayUserService;
 
     @InjectMocks
     UserController userController;

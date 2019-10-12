@@ -8,6 +8,8 @@ public interface Constant {
     String USER_UPDATED_EVENT = "User Events Updated";
     String USER_DEACTIVATED_EVENT = "User Events Deactivated";
 
+    String KAFKA_BOOTSTRAP_ADDRESS = "kafka.bootstrap.address";
+
      long JWT_TOKEN_VALIDITY = 5*60;
 
 }
