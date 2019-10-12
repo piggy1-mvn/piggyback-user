@@ -54,6 +54,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setUser_type(user.getUser_type());
 		newUser.setDevice_id(user.getDevice_id());
 		newUser.setUser_rsa(user.getUser_rsa());
+		newUser.setUser_partner_id(user.getUser_partner_id());
 		return userServiceRepo.save(newUser);
 	}
 
@@ -76,6 +77,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setUser_type(user.getUser_type());
 		newUser.setDevice_id(user.getDevice_id());
 		newUser.setUser_rsa(user.getUser_rsa());
+		newUser.setUser_partner_id(user.getUser_partner_id());
 		return userServiceRepo.save(newUser);
 	}
 

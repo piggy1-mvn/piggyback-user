@@ -1,5 +1,6 @@
 package com.incentives.piggyback.user.service;
 
+import com.incentives.piggyback.user.model.UserPartnerIdRequest;
 import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.model.UserInterest;
@@ -28,4 +29,6 @@ public interface UserService {
      Users partialUpdate(UserInterest userInterest, Long id);
 
 	ResponseEntity<List<Users>> getUserWithParticularInterest(String users, String interest);
+
+     ResponseEntity<Users> updateUserPartnerId(UserPartnerIdRequest userInterest, Long id);
 }

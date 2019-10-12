@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.incentives.piggyback.user.model.UserPartnerIdRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -150,6 +151,13 @@ class UserServiceImpl implements UserService {
 		});
 		if (! CommonUtility.isValidList(matchedUsersList)) throw new UserNotFoundException("No preferences matched");
 		return ResponseEntity.ok(matchedUsersList);
+	}
+
+	@Override
+	public ResponseEntity<Users> updateUserPartnerId(UserPartnerIdRequest userPartnerIdRequest, Long id) {
+		Users user= userServiceRepo.findById(id).orElseThrow(()->new UserNotFoundException(id));
+		user.setUser_partner_id(userPartnerIdRequest.getUser_partner_id());
+		return ResponseEntity.ok(user);
 	}
 
 }
