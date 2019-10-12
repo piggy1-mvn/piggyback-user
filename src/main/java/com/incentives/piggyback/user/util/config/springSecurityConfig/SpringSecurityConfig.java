@@ -76,7 +76,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
-	@Override
 	public void configure(WebSecurity web) throws Exception {
 		super.configure(web);
 		web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
