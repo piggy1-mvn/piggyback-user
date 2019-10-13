@@ -1,9 +1,9 @@
 package com.incentives.piggyback.user.service;
 
-import com.incentives.piggyback.user.model.UserPartnerIdRequest;
+import com.incentives.piggyback.user.model.UserInterest;
+import com.incentives.piggyback.user.model.UserPartnerDto;
 import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
-import com.incentives.piggyback.user.model.UserInterest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -30,5 +30,5 @@ public interface UserService {
 
 	ResponseEntity<List<Users>> getUserWithParticularInterest(String users, String interest);
 
-     ResponseEntity<Users> updateUserPartnerId(UserPartnerIdRequest userInterest, Long id);
+    void updateUserwithPartnerId(UserPartnerDto userPartnerDto);
 }

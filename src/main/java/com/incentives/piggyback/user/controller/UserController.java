@@ -1,7 +1,6 @@
 package com.incentives.piggyback.user.controller;
 
 import com.incentives.piggyback.user.model.UserInterest;
-import com.incentives.piggyback.user.model.UserPartnerIdRequest;
 import com.incentives.piggyback.user.model.UserRoles;
 import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.service.UserService;
@@ -65,12 +64,6 @@ public class UserController {
         return userService.updateUserInterest(userInterest,id);
     }
 
-    @PatchMapping("/user/partner/{id}")
-    public ResponseEntity<Users> updateUserPartnerId(@RequestBody UserPartnerIdRequest userPartnerIdRequest, @PathVariable Long id) {
-        log.info("User Service: Received PATCH request for updating user interest.");
-        return userService.updateUserPartnerId(userPartnerIdRequest,id);
-    }
-    
     @GetMapping("/user/particular/interest")
     public ResponseEntity<List<Users>> getUserWithParticularInterest(
     		@RequestParam(value = "users", required = true) String users,

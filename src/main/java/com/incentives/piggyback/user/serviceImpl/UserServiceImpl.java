@@ -7,16 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.incentives.piggyback.user.model.UserPartnerIdRequest;
+import com.incentives.piggyback.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
-import com.incentives.piggyback.user.model.UserInterest;
-import com.incentives.piggyback.user.model.UserRoles;
-import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.publisher.KafkaMessageProducer;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.service.JwtUserDetailsService;
@@ -155,10 +152,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<Users> updateUserPartnerId(UserPartnerIdRequest userPartnerIdRequest, Long id) {
-		Users user= userServiceRepo.findById(id).orElseThrow(()->new UserNotFoundException(id));
-		user.setUser_partner_id(userPartnerIdRequest.getUser_partner_id());
-		return ResponseEntity.ok(user);
+	public void updateUserwithPartnerId(UserPartnerDto userPartnerDto) {
+		Users user= userServiceRepo.findById(userPartnerDto.getUserId()).orElseThrow(()->new UserNotFoundException(userPartnerDto.getUserId()));
+		user.setUser_partner_id(userPartnerDto.getPartnerId());
+		userServiceRepo.save(user);
 	}
 
 }
