@@ -1,13 +1,5 @@
 package com.incentives.piggyback.user.controller;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import com.incentives.piggyback.user.model.FbRequest;
 import com.incentives.piggyback.user.model.JwtResponse;
 import com.incentives.piggyback.user.model.UserCredential;
@@ -26,11 +18,21 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -60,7 +62,7 @@ public class JwtAuthenticationController {
 		final UserDetails userDetails = jwtInMemoryUserDetailsService
 				.loadUserByUsername(authenticationRequest.getEmail());
 		Users user = userServiceRepo.findByEmail(authenticationRequest.getEmail());
-		final String token = jwtTokenUtil.generateToken(userDetails, user.getUser_role(), user.getId());
+		final String token = jwtTokenUtil.generateToken(userDetails, user.getUser_role(), user.getId(),user.getUser_partner_id());
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
@@ -72,7 +74,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = jwtInMemoryUserDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());
         Users user = userServiceRepo.findByEmail(authenticationRequest.getEmail());
-        final String token = jwtTokenUtil.generateToken(userDetails, user.getUser_role(), user.getId());
+        final String token = jwtTokenUtil.generateToken(userDetails, user.getUser_role(), user.getId(),user.getUser_partner_id());
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
