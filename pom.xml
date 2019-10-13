@@ -18,6 +18,12 @@
 		<java.version>1.8</java.version>
 		<docker.image.prefix>piggy1</docker.image.prefix>
 	</properties>
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<url>http://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
 	<profiles>
 		<profile>
 			<id>dev</id>
@@ -122,6 +128,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.9</version>
+		</dependency>
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>monitoring-interceptors</artifactId>
+			<version>5.3.1</version>
 		</dependency>
 	</dependencies>
 	<build>
