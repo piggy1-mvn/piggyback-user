@@ -1,7 +1,6 @@
 package com.incentives.piggyback.user.service;
 
-import java.util.ArrayList;
-
+import com.incentives.piggyback.user.model.Users;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.util.constants.Roles;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -12,7 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.incentives.piggyback.user.model.Users;
+
+import java.util.ArrayList;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -53,6 +53,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setUser_role(user.getUser_role());
 		newUser.setUser_type(user.getUser_type());
 		newUser.setDevice_id(user.getDevice_id());
+		newUser.setUser_rsa(user.getUser_rsa());
+		newUser.setUser_partner_id(user.getUser_partner_id());
 		return userServiceRepo.save(newUser);
 	}
 
@@ -74,6 +76,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newUser.setUser_role(user.getUser_role());
 		newUser.setUser_type(user.getUser_type());
 		newUser.setDevice_id(user.getDevice_id());
+		newUser.setUser_rsa(user.getUser_rsa());
+		newUser.setUser_partner_id(user.getUser_partner_id());
 		return userServiceRepo.save(newUser);
 	}
 

@@ -4,4 +4,5 @@ target/
 user.iml
 .classpath
 .project
+secret-storage.json
 kub-deploy.json

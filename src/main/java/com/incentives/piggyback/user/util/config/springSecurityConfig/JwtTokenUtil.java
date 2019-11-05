@@ -52,19 +52,21 @@ public class JwtTokenUtil implements Serializable {
 		return expiration.before(new Date());
 	}
 
-	public String generateToken(UserDetails userDetails, String role, long userId) {
+	public String generateToken(UserDetails userDetails, String role, long userId, String partnerId) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("user_role", role);
 		claims.put("userId", userId);
+		if(null!=partnerId && !partnerId.isEmpty()) {
+			claims.put("user_partner_id", partnerId);
+		}
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-		String token =  Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000)).signWith(SignatureAlgorithm.HS512, secret).compact();
-		log.info("Token generated" + token);
-		return token;
+
 	}
 
 	public Boolean canTokenBeRefreshed(String token) {
