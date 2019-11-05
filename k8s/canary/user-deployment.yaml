@@ -20,11 +20,11 @@ spec:
       - image: gcr.io/omega-palace-254907/piggy1-user:v17
         name: piggyback-prod-runner-user
         env:
-        - name: JASYPT_ENCRYPTOR_PASSWORD
-          valueFrom:
-          secretKeyRef:
-            name: jasypt-password
-            key: password
+          - name: JASYPT_ENCRYPTOR_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: jasypt-password
+                key: password
         resources:
           limits:
             memory: "384Mi"
