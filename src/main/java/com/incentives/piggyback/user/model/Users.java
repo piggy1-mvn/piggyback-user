@@ -70,11 +70,14 @@ public class Users {
     @Column(name="user_rsa",length = 512)
     private String user_rsa;
 
+    @Column(name="user_partner_id")
+    private String user_partner_id;
+
     @Override
     public String toString() {
         return "User [userId=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", user_password="
                 + user_password + ", mobile_number=" + mobile_number + ",mobile_verified" + mobile_verified + ",email " + email + ",user_interests " + user_interests
-                + ",user_role" + user_type + ",device_id " + device_id +",user_rsa_token " + user_rsa+ "]";
+                + ",user_role" + user_type + ",device_id " + device_id +",user_rsa_token " + user_rsa+ ",user_partner_id " + user_partner_id+"]";
     }
 
 }

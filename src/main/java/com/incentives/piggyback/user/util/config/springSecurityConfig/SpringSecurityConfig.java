@@ -16,8 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @Configuration
 @EnableWebSecurity
@@ -50,10 +50,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
-		StrictHttpFirewall firewall = new StrictHttpFirewall();
-		firewall.setAllowUrlEncodedSlash(true);
-		return firewall;
+	public HttpFirewall defaultHttpFirewall() {
+		return new DefaultHttpFirewall();
 	}
 
 	@Override
@@ -76,9 +74,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
-	@Override
 	public void configure(WebSecurity web) throws Exception {
 		super.configure(web);
-		web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
+		web.httpFirewall(defaultHttpFirewall());
 	}
 }

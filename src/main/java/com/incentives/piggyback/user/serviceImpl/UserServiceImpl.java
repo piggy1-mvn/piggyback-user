@@ -7,16 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.incentives.piggyback.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.incentives.piggyback.user.exception.UserNotFoundException;
-import com.incentives.piggyback.user.model.UserInterest;
-import com.incentives.piggyback.user.model.UserRoles;
-import com.incentives.piggyback.user.model.Users;
-import com.incentives.piggyback.user.publisher.UserEventPublisher;
+import com.incentives.piggyback.user.publisher.KafkaMessageProducer;
 import com.incentives.piggyback.user.repository.UserServiceRepository;
 import com.incentives.piggyback.user.service.JwtUserDetailsService;
 import com.incentives.piggyback.user.service.UserService;
@@ -25,14 +23,16 @@ import com.incentives.piggyback.user.util.constants.Constant;
 import com.incentives.piggyback.user.util.constants.Roles;
 
 @Service
-class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserServiceRepository userServiceRepo;
 
-	@Autowired
-	private UserEventPublisher.PubsubOutboundGateway messagingGateway;
+	private final KafkaMessageProducer kafkaMessageProducer;
 
+	public UserServiceImpl(KafkaMessageProducer kafkaMessageProducer) {
+		this.kafkaMessageProducer = kafkaMessageProducer;
+	}
 
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
@@ -43,15 +43,15 @@ class UserServiceImpl implements UserService {
 			return ResponseEntity.badRequest().build();
 		}
 		Users newUser = userDetailsService.save(user);
-		//PUSHING MESSAGES TO GCP
-		messagingGateway.sendToPubsub(
+		kafkaMessageProducer.send(
 				CommonUtility.stringifyEventForPublish(
 						newUser.toString(),
 						Constant.USER_CREATED_EVENT,
 						Calendar.getInstance().getTime().toString(),
 						"",
 						Constant.USER_SOURCE_ID
-						));
+				)
+		);
 		return ResponseEntity.ok(newUser);
 	}
 
@@ -82,31 +82,30 @@ class UserServiceImpl implements UserService {
 	public ResponseEntity<Users> updateUser(Long id, Users user) {
 		userServiceRepo.findById(id).orElseThrow(()->new UserNotFoundException(id));
 		Users updatedUser = userDetailsService.updateUser(user);
-		//PUSHING MESSAGES TO GCP
-		messagingGateway.sendToPubsub(
+		kafkaMessageProducer.send(
 				CommonUtility.stringifyEventForPublish(
 						updatedUser.toString(),
 						Constant.USER_UPDATED_EVENT,
 						Calendar.getInstance().getTime().toString(),
 						"",
 						Constant.USER_SOURCE_ID
-						));
+				)
+		);
 		return ResponseEntity.ok(updatedUser);
 	}
 
 	public ResponseEntity<Users> deleteUser(Long id) {
-
 		userServiceRepo.findById(id).orElseThrow(()->new UserNotFoundException(id));
 		userServiceRepo.deleteById(id);
-		//PUSHING MESSAGES TO GCP
-		messagingGateway.sendToPubsub(
+		kafkaMessageProducer.send(
 				CommonUtility.stringifyEventForPublish(
 						id.toString(),
 						Constant.USER_DEACTIVATED_EVENT,
 						Calendar.getInstance().getTime().toString(),
 						"",
 						Constant.USER_SOURCE_ID
-						));
+				)
+		);
 		return ResponseEntity.ok().build();
 	}
 
@@ -118,15 +117,15 @@ class UserServiceImpl implements UserService {
 
 	public ResponseEntity<Users> updateUserInterest(UserInterest userInterest, Long id) {
 		Users updatedUser =partialUpdate(userInterest,id);
-		//PUSHING MESSAGES TO GCP
-		messagingGateway.sendToPubsub(
+		kafkaMessageProducer.send(
 				CommonUtility.stringifyEventForPublish(
 						id.toString(),
 						Constant.USER_UPDATED_EVENT,
 						Calendar.getInstance().getTime().toString(),
 						"",
 						Constant.USER_SOURCE_ID
-						));
+				)
+		);
 		return ResponseEntity.ok(updatedUser);
 	}
 
@@ -150,6 +149,13 @@ class UserServiceImpl implements UserService {
 		});
 		if (! CommonUtility.isValidList(matchedUsersList)) throw new UserNotFoundException("No preferences matched");
 		return ResponseEntity.ok(matchedUsersList);
+	}
+
+	@Override
+	public void updateUserwithPartnerId(UserPartnerDto userPartnerDto) {
+		Users user= userServiceRepo.findById(userPartnerDto.getUserId()).orElseThrow(()->new UserNotFoundException(userPartnerDto.getUserId()));
+		user.setUser_partner_id(userPartnerDto.getPartnerId());
+		userServiceRepo.save(user);
 	}
 
 }

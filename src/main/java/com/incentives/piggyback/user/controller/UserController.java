@@ -24,51 +24,51 @@ public class UserController {
 
     @GetMapping("/user")
     public Iterable<Users> getAllUser() {
-        log.debug("User Service: Received GET request for getting all users.");
+        log.info("User Service: Received GET request for getting all users.");
         return userService.getAllUser();
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<Users> getUserById(@PathVariable Long id) {
-        log.debug("User Service: Received GET request for getting user with userid."+ id);
+        log.info("User Service: Received GET request for getting user with userid."+ id);
         return userService.getUserById(id);
     }
 
     @PostMapping("/user/role")
     public ResponseEntity<Users> getUsersInRoles(@RequestBody UserRoles userRoles) {
-        log.debug("User Service: Received POST request for getting users in roles." + userRoles.toString());
+        log.info("User Service: Received POST request for getting users in roles." + userRoles.toString());
         return userService.getUsersInRole(userRoles);
     }
 
     @PutMapping("/user/{id}")
     public ResponseEntity<Users> updateUser(@PathVariable Long id, @Valid @RequestBody Users user) {
-        log.debug("User Service: Received PUT request for updating user with userid."+ id);
+        log.info("User Service: Received PUT request for updating user with userid."+ id);
         return userService.updateUser(id,user);
     }
 
     @DeleteMapping("/user/{id}")
     public ResponseEntity<Users> deleteUser(@PathVariable Long id) {
-        log.debug("User Service: Received DELETE request for deleting user with userid."+ id);
+        log.info("User Service: Received DELETE request for deleting user with userid."+ id);
         return userService.deleteUser(id);
     }
 
     @GetMapping("/user/roles")
     public ResponseEntity<String> getAllUserRoles() {
-        log.debug("User Service: Received GET request for getting all roles available.");
+        log.info("User Service: Received GET request for getting all roles available.");
         return userService.getAllUserRoles();
     }
     
     @PatchMapping("/user/interest/{id}")
     public ResponseEntity<Users> updateUserInterest(@RequestBody UserInterest userInterest, @PathVariable Long id) {
-        log.debug("User Service: Received PATCH request for updating user interest.");
+        log.info("User Service: Received PATCH request for updating user interest.");
         return userService.updateUserInterest(userInterest,id);
     }
-    
+
     @GetMapping("/user/particular/interest")
     public ResponseEntity<List<Users>> getUserWithParticularInterest(
     		@RequestParam(value = "users", required = true) String users,
     		@RequestParam(value = "interest", required = true) String interest) {
-        log.debug("User Service: Received GET request for getting all users with particular interest.");
+        log.info("User Service: Received GET request for getting all users with particular interest.");
         return userService.getUserWithParticularInterest(users, interest);
     }
 
